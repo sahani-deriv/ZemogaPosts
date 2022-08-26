@@ -20,13 +20,13 @@ class PostsRemoteApiClient {
   /// Fetches all the posts.
   ///
   /// REST call: `GET /posts`
-  Future<List<Post>> getAllPosts() async {
+  Future<List<PostData>> getAllPosts() async {
     final response = await _makeRequest<List<Map<String, dynamic>>>(
       httpMethod: _HttpMethod.get,
       endpoint: '/posts',
     );
     try {
-      return response.map(Post.fromJson).toList();
+      return response.map(PostData.fromJson).toList();
     } catch (e) {
       throw JsonDeserializationException();
     }

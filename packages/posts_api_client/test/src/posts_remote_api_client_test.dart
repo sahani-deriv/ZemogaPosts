@@ -14,7 +14,7 @@ void main() {
 
     final mockPosts = List.generate(
       2,
-      (index) => Post(
+      (index) => PostData(
         userId: index,
         id: index,
         title: 'Test Title',

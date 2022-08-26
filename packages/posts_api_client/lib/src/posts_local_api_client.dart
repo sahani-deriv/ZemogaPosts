@@ -15,36 +15,27 @@ class PostsLocalApiClient {
   ///Opens all the hive boxes
   Future<void> _openHiveBoxes() async {
     await _hive.openBox<Post>('posts');
-    await _hive.openBox<PostComment>('comments');
-    await _hive.openBox<FavoritePost>('favorites');
+    await _hive.openBox<Post>('favorites');
   }
 
   /// Adds item to the hive box
-  void _addToBox<T>(T item, String boxName) {
-    _hive.box<T>(boxName).add(item);
+  void _addToBox<T>(T item, String boxName, int key) {
+    _hive.box<T>(boxName).put(key, item);
   }
 
   /// Adds post to the hive box
-  void addPost(List<Post> posts) => _addToBox(posts, 'posts');
+  void addPost(Post post) => _addToBox(post, 'posts', post.postData.id);
 
   /// Adds favorite posts to the hive box
-  void addPostToFavorites(FavoritePost post) => _addToBox(post, 'favorites');
-
-  /// Adds post comments to the hive box
-  void addPostComment(List<PostComment> comments) {
-    _addToBox(comments, 'comments');
-  }
+  void addPostToFavorites(Post post) =>
+      _addToBox(post, 'favorites', post.postData.id);
 
   /// Returns all the posts from the hive box
   List<Post> getAllPosts() => _hive.box<Post>('posts').values.toList();
 
-  /// Returns all the comments from the hive box
-  List<PostComment> getAllPostComments() =>
-      _hive.box<PostComment>('comments').values.toList();
-
   /// Returns all the favorite posts from the hive box
-  List<FavoritePost> getAllFavoritePosts() =>
-      _hive.box<FavoritePost>('favorites').values.toList();
+  List<Post> getAllFavoritePosts() =>
+      _hive.box<Post>('favorites').values.toList();
 
   /// Returns the favorite post of the given id
   void deleteAllPosts() => _hive.box<Post>('posts').clear();
@@ -55,8 +46,24 @@ class PostsLocalApiClient {
       final postToBeDeleted = _hive
           .box<Post>('posts')
           .values
-          .firstWhere((element) => element.id.toString() == postId);
-      await _hive.box<Post>('posts').delete(postToBeDeleted);
+          .firstWhere((element) => element.postData.id.toString() == postId);
+
+      /// key was set while adding data to the box
+      final key = postToBeDeleted.postData.id;
+      await _hive.box<Post>('posts').delete(key);
+    } catch (e) {
+      throw NoElementException();
+    }
+  }
+
+  /// Returns the favorite post of the given id
+  Future<void> removeFromFavorites(String postId) async {
+    try {
+      final postToBeDeleted = _hive
+          .box<Post>('favorites')
+          .values
+          .firstWhere((element) => element.postData.id.toString() == postId);
+      await _hive.box<Post>('favorites').delete(postToBeDeleted);
     } catch (e) {
       throw NoElementException();
     }
