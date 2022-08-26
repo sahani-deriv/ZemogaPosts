@@ -37,7 +37,13 @@ class BadResponseException implements Exception {
   final String? message;
 }
 
-/// {@template bad_response_exception}
+/// {@template json_deserialization_exception}
 /// Thrown when an error occurs while deserializing the response body.
 /// {@endtemplate}
 class JsonDeserializationException implements Exception {}
+
+/// {@template no_element_exception}
+/// Thrown when an error occurs while there are no
+/// matching elements in a list but is trying to access it.
+/// {@endtemplate}
+class NoElementException implements Exception {}

@@ -1,14 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:posts_api_client/src/exceptions/exceptions.dart';
 import 'package:posts_api_client/src/models/models.dart';
-import 'package:posts_api_client/src/models/post_comment.dart';
 
-/// {@template posts_api_client}
+/// {@template posts_remote_api_client}
 /// A Dart API Client for the posts REST API.
 /// {@endtemplate}
-class PostsApiClient {
-  /// {@macro posts_api_client}
-  PostsApiClient({Dio? dio})
+class PostsRemoteApiClient {
+  /// {@macro posts_remote_api_client}
+  PostsRemoteApiClient({Dio? dio})
       : _dio = dio ?? Dio()
           ..options = BaseOptions(
             baseUrl: _kBaseUrl,

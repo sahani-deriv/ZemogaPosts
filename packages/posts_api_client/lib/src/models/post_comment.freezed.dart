@@ -20,10 +20,15 @@ PostComment _$PostCommentFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$PostComment {
+  @HiveField(0)
   int get postId => throw _privateConstructorUsedError;
+  @HiveField(1)
   int get id => throw _privateConstructorUsedError;
+  @HiveField(2)
   String get name => throw _privateConstructorUsedError;
+  @HiveField(3)
   String get email => throw _privateConstructorUsedError;
+  @HiveField(4)
   String get body => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -37,7 +42,12 @@ abstract class $PostCommentCopyWith<$Res> {
   factory $PostCommentCopyWith(
           PostComment value, $Res Function(PostComment) then) =
       _$PostCommentCopyWithImpl<$Res>;
-  $Res call({int postId, int id, String name, String email, String body});
+  $Res call(
+      {@HiveField(0) int postId,
+      @HiveField(1) int id,
+      @HiveField(2) String name,
+      @HiveField(3) String email,
+      @HiveField(4) String body});
 }
 
 /// @nodoc
@@ -88,7 +98,12 @@ abstract class _$$_PostCommentCopyWith<$Res>
           _$_PostComment value, $Res Function(_$_PostComment) then) =
       __$$_PostCommentCopyWithImpl<$Res>;
   @override
-  $Res call({int postId, int id, String name, String email, String body});
+  $Res call(
+      {@HiveField(0) int postId,
+      @HiveField(1) int id,
+      @HiveField(2) String name,
+      @HiveField(3) String email,
+      @HiveField(4) String body});
 }
 
 /// @nodoc
@@ -136,26 +151,32 @@ class __$$_PostCommentCopyWithImpl<$Res> extends _$PostCommentCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
+@HiveType(typeId: 1, adapterName: 'PostCommentAdapter')
 class _$_PostComment implements _PostComment {
   _$_PostComment(
-      {required this.postId,
-      required this.id,
-      required this.name,
-      required this.email,
-      required this.body});
+      {@HiveField(0) required this.postId,
+      @HiveField(1) required this.id,
+      @HiveField(2) required this.name,
+      @HiveField(3) required this.email,
+      @HiveField(4) required this.body});
 
   factory _$_PostComment.fromJson(Map<String, dynamic> json) =>
       _$$_PostCommentFromJson(json);
 
   @override
+  @HiveField(0)
   final int postId;
   @override
+  @HiveField(1)
   final int id;
   @override
+  @HiveField(2)
   final String name;
   @override
+  @HiveField(3)
   final String email;
   @override
+  @HiveField(4)
   final String body;
 
   @override
@@ -200,24 +221,29 @@ class _$_PostComment implements _PostComment {
 
 abstract class _PostComment implements PostComment {
   factory _PostComment(
-      {required final int postId,
-      required final int id,
-      required final String name,
-      required final String email,
-      required final String body}) = _$_PostComment;
+      {@HiveField(0) required final int postId,
+      @HiveField(1) required final int id,
+      @HiveField(2) required final String name,
+      @HiveField(3) required final String email,
+      @HiveField(4) required final String body}) = _$_PostComment;
 
   factory _PostComment.fromJson(Map<String, dynamic> json) =
       _$_PostComment.fromJson;
 
   @override
+  @HiveField(0)
   int get postId;
   @override
+  @HiveField(1)
   int get id;
   @override
+  @HiveField(2)
   String get name;
   @override
+  @HiveField(3)
   String get email;
   @override
+  @HiveField(4)
   String get body;
   @override
   @JsonKey(ignore: true)

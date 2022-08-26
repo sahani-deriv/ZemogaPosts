@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 part 'post_comment.freezed.dart';
 part 'post_comment.g.dart';
@@ -9,12 +10,13 @@ part 'post_comment.g.dart';
 @freezed
 class PostComment with _$PostComment {
   ///{@macro post_comment}
+  @HiveType(typeId: 1, adapterName: 'PostCommentAdapter')
   factory PostComment({
-    required final int postId,
-    required final int id,
-    required final String name,
-    required final String email,
-    required final String body,
+    @HiveField(0) required final int postId,
+    @HiveField(1) required final int id,
+    @HiveField(2) required final String name,
+    @HiveField(3) required final String email,
+    @HiveField(4) required final String body,
   }) = _PostComment;
 
   /// {@template json_serializable}

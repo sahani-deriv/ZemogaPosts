@@ -1,7 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-part 'posts.freezed.dart';
-part 'posts.g.dart';
+part 'post.freezed.dart';
+part 'post.g.dart';
 
 /// {@template post}
 /// A model that represents the posts data.
@@ -9,11 +10,12 @@ part 'posts.g.dart';
 @freezed
 class Post with _$Post {
   /// {@macro post}
+  @HiveType(typeId: 0, adapterName: 'PostAdapter')
   factory Post({
-    required final int userId,
-    required final int id,
-    required final String title,
-    required final String body,
+    @HiveField(0) required final int userId,
+    @HiveField(1) required final int id,
+    @HiveField(2) required final String title,
+    @HiveField(3) required final String body,
   }) = _Post;
 
   /// {@template json_serializable}

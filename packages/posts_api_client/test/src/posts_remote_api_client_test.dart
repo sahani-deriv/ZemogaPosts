@@ -4,15 +4,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:posts_api_client/posts_api_client.dart';
-import 'package:posts_api_client/src/exceptions/exceptions.dart';
-import 'package:posts_api_client/src/models/post_comment.dart';
-import 'package:posts_api_client/src/models/posts.dart';
 
 class MockDio extends Mock implements Dio {}
 
 void main() {
-  group('PostsApiClient', () {
-    late PostsApiClient _api;
+  group('PostsRemoteApiClient', () {
+    late PostsRemoteApiClient _api;
     late Dio _dio;
 
     final mockPosts = List.generate(
@@ -37,7 +34,7 @@ void main() {
 
     setUp(() {
       _dio = MockDio();
-      _api = PostsApiClient(dio: _dio);
+      _api = PostsRemoteApiClient(dio: _dio);
     });
     test('can be instantiated', () {
       expect(_api, isNotNull);
