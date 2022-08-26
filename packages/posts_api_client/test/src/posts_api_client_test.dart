@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_constructors
+
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -160,6 +161,49 @@ void main() {
         );
 
         verify(() => _dio.get<List<Map<String, dynamic>>>(_url)).called(1);
+      });
+    });
+
+    group('.deletePost', () {
+      late String _url;
+      late RequestOptions _requestOptions;
+      late int _postId;
+
+      setUp(() {
+        _postId = 1;
+        _url = '/posts/$_postId';
+        _requestOptions = RequestOptions(path: _url);
+      });
+
+      test('makes correct delete request', () {
+        when(() => _dio.delete<dynamic>(_url)).thenAnswer(
+          (_) async => Response<Map<String, dynamic>>(
+            statusCode: 200,
+            data: {},
+            requestOptions: _requestOptions,
+          ),
+        );
+
+        expect(
+          _api.deletePost(postId: _postId.toString()),
+          isNotNull,
+        );
+      });
+
+      test('throws InvalidRequestOptions when status code is not 200', () {
+        when(() => _dio.delete<dynamic>(_url)).thenAnswer(
+          (_) async => Response<Map<String, dynamic>>(
+            statusCode: 400,
+            requestOptions: _requestOptions,
+          ),
+        );
+
+        expect(
+          _api.deletePost(postId: _postId.toString()),
+          throwsA(isA<InvalidRequestException>()),
+        );
+
+        verify(() => _dio.delete<dynamic>(_url)).called(1);
       });
     });
   });

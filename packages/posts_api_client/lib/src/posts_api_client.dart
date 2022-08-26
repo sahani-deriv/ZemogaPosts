@@ -48,6 +48,16 @@ class PostsApiClient {
     }
   }
 
+  /// Deletes a post of given id.
+  ///
+  /// REST call: `DELETE /posts/:id`
+  Future<void> deletePost({required String postId}) async {
+    await _makeRequest<dynamic>(
+      httpMethod: _HttpMethod.delete,
+      endpoint: '/posts/$postId',
+    );
+  }
+
   /// Make a get or post request to the given endpoint.
   Future<T> _makeRequest<T>({
     required _HttpMethod httpMethod,
@@ -64,6 +74,9 @@ class PostsApiClient {
           break;
         case _HttpMethod.post:
           response = await _dio.post<T>(endpoint, data: data);
+          break;
+        case _HttpMethod.delete:
+          response = await _dio.delete<T>(endpoint);
           break;
       }
     } on DioError catch (e) {
@@ -89,4 +102,5 @@ class PostsApiClient {
 enum _HttpMethod {
   get,
   post,
+  delete,
 }
