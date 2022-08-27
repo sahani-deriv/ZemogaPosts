@@ -12,6 +12,7 @@ class PostState {
     required this.posts,
     required this.favoritePosts,
     this.message,
+    this.commentsByPost,
   });
 
   /// Returns a [PostState] with the [status] set to
@@ -35,12 +36,14 @@ class PostState {
     String? message,
     required List<Post> posts,
     required List<Post> favoritePosts,
+    List<Comment>? commentsByPost,
   }) {
     return PostState._(
       status: PostStatus.success,
       message: message,
       posts: posts,
       favoritePosts: favoritePosts,
+      commentsByPost: commentsByPost,
     );
   }
 
@@ -69,6 +72,9 @@ class PostState {
 
   /// Represents the message to notify anything.
   final String? message;
+
+  /// Represents comments of a post
+  final List<Comment>? commentsByPost;
 
   /// The equality operator.
   @override

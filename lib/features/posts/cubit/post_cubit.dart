@@ -99,12 +99,25 @@ class PostCubit extends Cubit<PostState> {
         favoritePosts: state.favoritePosts,
       ),
     );
-    _postsRepository.removeFromFavorites(postId: post.id.toString());
-    emit(
-      PostState.success(
-        posts: state.posts,
-        favoritePosts: state.favoritePosts..remove(post),
-      ),
+    _postsRepository.removeFromFavorites(postId: post.id.toString()).when(
+      success: (_) {
+        emit(
+          PostState.success(
+            posts: state.posts,
+            favoritePosts: state.favoritePosts..remove(post),
+          ),
+        );
+      },
+      failure: (failure) {
+        emit(
+          PostState.failure(
+            message: failure.message ??
+                'Something went wrong while removing from favorites',
+            posts: state.posts,
+            favoritePosts: state.favoritePosts,
+          ),
+        );
+      },
     );
   }
 
@@ -147,6 +160,39 @@ class PostCubit extends Cubit<PostState> {
           PostState.failure(
             message:
                 failure.message ?? 'Something went wrong while deleting post',
+            posts: state.posts,
+            favoritePosts: state.favoritePosts,
+          ),
+        );
+      },
+    );
+  }
+
+  /// Interacts with [PostsRepository] to get comments by post.
+  Future<void> getCommentsByPost({required int postId}) async {
+    emit(
+      PostState.pending(
+        posts: state.posts,
+        favoritePosts: state.favoritePosts,
+      ),
+    );
+
+    final result = await _postsRepository.getCommentsById(postId: postId);
+    result.when(
+      success: (comments) {
+        emit(
+          PostState.success(
+            posts: state.posts,
+            favoritePosts: state.favoritePosts,
+            commentsByPost: comments,
+          ),
+        );
+      },
+      failure: (failure) {
+        emit(
+          PostState.failure(
+            message: failure.message ??
+                'Something went wrong while fetching comments',
             posts: state.posts,
             favoritePosts: state.favoritePosts,
           ),
