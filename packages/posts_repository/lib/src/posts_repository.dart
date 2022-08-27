@@ -1,11 +1,15 @@
 import 'package:posts_api_client/posts_api_client.dart';
 import 'package:posts_repository/src/core/core.dart';
 
-/// A type representing either a [ZemogaPostsFailure] or a list of type [Post].
-typedef GetPostsResult = Result<ZemogaPostsFailure, List<Post>>;
+/// A type representing either a [PostsFailure] or a list of type [Post].
+typedef GetPostsResult = Result<PostsFailure, List<Post>>;
 
-/// A type representing either a [ZemogaPostsFailure] or a [void].
-typedef VoidResult = Result<ZemogaPostsFailure, void>;
+/// A type representing either a [PostsFailure] or a list
+/// of type [Comment].
+typedef GetCommentsByIdResult = Result<PostsFailure, List<Comment>>;
+
+/// A type representing either a [PostsFailure] or a [void].
+typedef VoidResult = Result<PostsFailure, void>;
 
 /// {@template posts_repository}
 /// A Dart Class which exposes methods by interacting with
@@ -21,18 +25,18 @@ abstract class PostsRepository {
   ///Fetches all the favorite posts from the api client.
   GetPostsResult getAllFavoritePosts();
 
-  ///Adds a post to the local database.
-  void addPost(Post post);
-
   ///Adds a favorite post to the local database.
-  void addPostToFavorites(Post post);
+  void addPostToFavorites({required Post post});
 
   ///Deletes a post.
-  VoidResult deletePost(String postId);
+  VoidResult deletePost({required String postId});
 
   ///Deletes all the posts from the local database.
   void deleteAllPosts();
 
   ///Removes a favorite post from the local database.
-  Future<void> removeFromFavorites(String postId);
+  VoidResult removeFromFavorites({required String postId});
+
+  /// Fetches a comment of its specific post.
+  Future<GetCommentsByIdResult> getCommentsById({required int postId});
 }

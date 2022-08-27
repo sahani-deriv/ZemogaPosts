@@ -1,7 +1,5 @@
 import 'package:posts_api_client/posts_api_client.dart';
 import 'package:posts_repository/posts_repository.dart';
-import 'package:posts_repository/src/core/failure.dart';
-import 'package:posts_repository/src/core/result.dart';
 
 ///{@template posts_repository}
 /// An implementation of [PostsRepository].
@@ -18,12 +16,7 @@ class PostRepositoryImpl implements PostsRepository {
   final PostsLocalApiClient _localApiClient;
 
   @override
-  void addPost(Post post) {
-    return _localApiClient.addPost(post);
-  }
-
-  @override
-  void addPostToFavorites(Post post) {
+  void addPostToFavorites({required Post post}) {
     return _localApiClient.addPostToFavorites(post);
   }
 
@@ -33,13 +26,13 @@ class PostRepositoryImpl implements PostsRepository {
   }
 
   @override
-  VoidResult deletePost(String postId) {
+  VoidResult deletePost({required String postId}) {
     try {
       _localApiClient.deletePost(postId);
       return const Result.success(null);
     } on NoElementException {
       return Result.failure(
-        ZemogaPostsFailure('No post found with id $postId'),
+        PostsFailure('No post found with the given id.'),
       );
     }
   }
@@ -51,7 +44,7 @@ class PostRepositoryImpl implements PostsRepository {
       return Result.success(posts);
     } catch (e) {
       return Result.failure(
-        ZemogaPostsFailure('No favorite posts found'),
+        PostsFailure('No favorite posts found'),
       );
     }
   }
@@ -67,12 +60,35 @@ class PostRepositoryImpl implements PostsRepository {
       }
       return Result.success(_localApiClient.getAllPosts());
     } catch (e) {
-      return Result.failure(ZemogaPostsFailure("Couldn't fetch posts."));
+      return Result.failure(PostsFailure("Couldn't fetch posts."));
     }
   }
 
   @override
-  Future<void> removeFromFavorites(String postId) {
-    return _localApiClient.removeFromFavorites(postId);
+  VoidResult removeFromFavorites({required String postId}) {
+    try {
+      _localApiClient.removeFromFavorites(postId);
+      return const Result.success(null);
+    } catch (e) {
+      return Result.failure(
+        PostsFailure("Couldn't remove post from favorites."),
+      );
+    }
+  }
+
+  @override
+  Future<GetCommentsByIdResult> getCommentsById({required int postId}) async {
+    try {
+      if (_localApiClient.getCommentsByPostId(postId).isEmpty) {
+        final comments =
+            await _remoteApiClient.getCommentsByPost(postId: postId.toString());
+        _localApiClient.addComment(comments: comments, postId: postId);
+      }
+      return Result.success(_localApiClient.getCommentsByPostId(postId));
+    } catch (e) {
+      return Result.failure(
+        PostsFailure('Error fetching comments for the post.'),
+      );
+    }
   }
 }

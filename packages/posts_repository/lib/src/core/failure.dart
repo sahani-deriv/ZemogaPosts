@@ -7,9 +7,9 @@ abstract class Failure implements Exception {}
 /// Returned when an exception is caught in the PostsRepository.
 /// {@endtemplate}
 @immutable
-class ZemogaPostsFailure extends Failure {
+class PostsFailure extends Failure {
   /// {@macro zemoga_posts_failure}
-  ZemogaPostsFailure([this.message]);
+  PostsFailure([this.message]);
 
   /// The message associated with the failure.
   final String? message;
@@ -18,7 +18,7 @@ class ZemogaPostsFailure extends Failure {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is ZemogaPostsFailure && other.message == message;
+    return other is PostsFailure && other.message == message;
   }
 
   @override
