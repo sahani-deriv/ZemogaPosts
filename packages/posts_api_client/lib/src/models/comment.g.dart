@@ -1,39 +1,39 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'post_data.dart';
+part of 'comment.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class PostDataAdapter extends TypeAdapter<_$_PostData> {
+class CommentAdapter extends TypeAdapter<_$_Comment> {
   @override
-  final int typeId = 0;
+  final int typeId = 1;
 
   @override
-  _$_PostData read(BinaryReader reader) {
+  _$_Comment read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return _$_PostData(
-      userId: fields[0] as int,
-      id: fields[1] as int,
-      title: fields[2] as String,
+    return _$_Comment(
+      id: fields[0] as int,
+      name: fields[1] as String,
+      email: fields[2] as String,
       body: fields[3] as String,
     );
   }
 
   @override
-  void write(BinaryWriter writer, _$_PostData obj) {
+  void write(BinaryWriter writer, _$_Comment obj) {
     writer
       ..writeByte(4)
       ..writeByte(0)
-      ..write(obj.userId)
-      ..writeByte(1)
       ..write(obj.id)
+      ..writeByte(1)
+      ..write(obj.name)
       ..writeByte(2)
-      ..write(obj.title)
+      ..write(obj.email)
       ..writeByte(3)
       ..write(obj.body);
   }
@@ -44,7 +44,7 @@ class PostDataAdapter extends TypeAdapter<_$_PostData> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PostDataAdapter &&
+      other is CommentAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
@@ -53,17 +53,17 @@ class PostDataAdapter extends TypeAdapter<_$_PostData> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_PostData _$$_PostDataFromJson(Map<String, dynamic> json) => _$_PostData(
-      userId: json['userId'] as int,
+_$_Comment _$$_CommentFromJson(Map<String, dynamic> json) => _$_Comment(
       id: json['id'] as int,
-      title: json['title'] as String,
+      name: json['name'] as String,
+      email: json['email'] as String,
       body: json['body'] as String,
     );
 
-Map<String, dynamic> _$$_PostDataToJson(_$_PostData instance) =>
+Map<String, dynamic> _$$_CommentToJson(_$_Comment instance) =>
     <String, dynamic>{
-      'userId': instance.userId,
       'id': instance.id,
-      'title': instance.title,
+      'name': instance.name,
+      'email': instance.email,
       'body': instance.body,
     };

@@ -15,23 +15,46 @@ class PostsLocalApiClient {
   ///Opens all the hive boxes
   Future<void> _openHiveBoxes() async {
     await _hive.openBox<Post>('posts');
+    await _hive.openBox<List<Comment>>('comments');
     await _hive.openBox<Post>('favorites');
   }
 
   /// Adds item to the hive box
-  void _addToBox<T>(T item, String boxName, int key) {
+  void _addToBox<T>({
+    required T item,
+    required String boxName,
+    required int key,
+  }) {
+    _hive.box<T>(boxName).put(key, item);
+  }
+
+  /// Updates item in the hive box
+  void updateBox<T>({
+    required T item,
+    required String boxName,
+    required int key,
+  }) {
     _hive.box<T>(boxName).put(key, item);
   }
 
   /// Adds post to the hive box
-  void addPost(Post post) => _addToBox(post, 'posts', post.postData.id);
+  void addPost(Post post) =>
+      _addToBox(item: post, boxName: 'posts', key: post.id);
+
+  /// Adds comment with its key [postId] to the hive box
+  void addComment({required List<Comment> comments, required int postId}) =>
+      _addToBox(item: comments, boxName: 'comments', key: postId);
 
   /// Adds favorite posts to the hive box
   void addPostToFavorites(Post post) =>
-      _addToBox(post, 'favorites', post.postData.id);
+      _addToBox(item: post, boxName: 'favorites', key: post.id);
 
   /// Returns all the posts from the hive box
   List<Post> getAllPosts() => _hive.box<Post>('posts').values.toList();
+
+  /// Returns all the comments from the hive box
+  List<Comment> getCommentsByPostId(int postId) =>
+      _hive.box<List<Comment>>('comments').get(postId) ?? [];
 
   /// Returns all the favorite posts from the hive box
   List<Post> getAllFavoritePosts() =>
@@ -46,10 +69,10 @@ class PostsLocalApiClient {
       final postToBeDeleted = _hive
           .box<Post>('posts')
           .values
-          .firstWhere((element) => element.postData.id.toString() == postId);
+          .firstWhere((element) => element.id.toString() == postId);
 
       /// key was set while adding data to the box
-      final key = postToBeDeleted.postData.id;
+      final key = postToBeDeleted.id;
       await _hive.box<Post>('posts').delete(key);
     } catch (e) {
       throw NoElementException();
@@ -62,7 +85,7 @@ class PostsLocalApiClient {
       final postToBeDeleted = _hive
           .box<Post>('favorites')
           .values
-          .firstWhere((element) => element.postData.id.toString() == postId);
+          .firstWhere((element) => element.id.toString() == postId);
       await _hive.box<Post>('favorites').delete(postToBeDeleted);
     } catch (e) {
       throw NoElementException();

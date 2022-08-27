@@ -14,7 +14,7 @@ void main() {
 
     final mockPosts = List.generate(
       2,
-      (index) => PostData(
+      (index) => Post(
         userId: index,
         id: index,
         title: 'Test Title',
@@ -23,8 +23,7 @@ void main() {
     );
     final mockComments = List.generate(
       2,
-      (index) => PostComment(
-        postId: index,
+      (index) => Comment(
         id: index,
         email: 'Test email',
         name: 'Test name',

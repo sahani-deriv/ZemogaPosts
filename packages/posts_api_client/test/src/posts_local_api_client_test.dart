@@ -2,32 +2,27 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:posts_api_client/posts_api_client.dart';
-import 'package:posts_api_client/src/posts_local_api_client.dart';
 
 class MockHive extends Mock implements HiveInterface {}
 
 class MockPostBox<Post> extends Mock implements Box<Post> {}
 
-class MockFavoriteBox<FavoritePost> extends Mock implements Box<FavoritePost> {}
+class MockFavoriteBox<Post> extends Mock implements Box<Post> {}
 
-final postData = PostData(
+class MockCommentBox<List> extends Mock implements Box<List> {}
+
+final post = Post(
   userId: 1,
   id: 1,
   title: 'title',
   body: 'body',
 );
 
-final comment = PostComment(
-  postId: 1,
+final comment = Comment(
   id: 1,
   name: 'name',
   email: 'email',
   body: 'body',
-);
-
-final post = Post(
-  postData: postData,
-  postComments: [comment],
 );
 
 void main() {
@@ -35,19 +30,28 @@ void main() {
     late HiveInterface _mockHive;
     late Box<Post> _postBox;
     late Box<Post> _favoriteBox;
+    late Box<List<Comment>> _commentBox;
     late PostsLocalApiClient _api;
 
     setUp(() {
       _mockHive = MockHive();
       _postBox = MockPostBox<Post>();
+      _commentBox = MockCommentBox<List<Comment>>();
       _favoriteBox = MockFavoriteBox<Post>();
 
       when(() => _mockHive.openBox<Post>('posts')).thenAnswer(
         (_) async => _postBox,
       );
+
       when(() => _mockHive.box<Post>('posts')).thenReturn(_postBox);
 
-      when(() => _mockHive.openBox<Post>(any())).thenAnswer(
+      when(() => _mockHive.openBox<List<Comment>>('comments')).thenAnswer(
+        (_) async => _commentBox,
+      );
+      when(() => _mockHive.box<List<Comment>>('comments'))
+          .thenReturn(_commentBox);
+
+      when(() => _mockHive.openBox<Post>('favorites')).thenAnswer(
         (_) async => _favoriteBox,
       );
       when(() => _mockHive.box<Post>(any())).thenReturn(_favoriteBox);
@@ -87,6 +91,37 @@ void main() {
         );
         final posts = _api.getAllPosts();
         expect(posts, equals([post]));
+      });
+    });
+
+    group('.addComment', () {
+      test('adds comment with its key as postId to the hive box', () async {
+        when(() => _mockHive.openBox<List<Comment>>('Comments')).thenAnswer(
+          (_) async => _commentBox,
+        );
+        when(() => _mockHive.box<List<Comment>>('Comments'))
+            .thenReturn(_commentBox);
+
+        when(() => _commentBox.put(any<int>(), [comment])).thenAnswer(
+          (_) async => () {},
+        );
+        _api.addComment(comments: [comment], postId: 1);
+        verify(() => _commentBox.put(any<int>(), [comment])).called(1);
+      });
+    });
+    group('.getCommentsByPostId', () {
+      test('returns all the comments of the specific post', () async {
+        when(() => _mockHive.openBox<List<Comment>>('comments')).thenAnswer(
+          (_) async => _commentBox,
+        );
+        when(() => _mockHive.box<List<Comment>>('comments'))
+            .thenReturn(_commentBox);
+
+        when(() => _commentBox.get(1)).thenAnswer(
+          (_) => List.generate(1, (i) => comment),
+        );
+        final comments = _api.getCommentsByPostId(1);
+        expect(comments, equals(List.generate(1, (i) => comment)));
       });
     });
 
@@ -133,7 +168,7 @@ void main() {
         when(() => _postBox.delete(any<String>())).thenAnswer(
           (_) async => () {},
         );
-        await _api.deletePost(post.postData.id.toString());
+        await _api.deletePost(post.id.toString());
         verify(() => _postBox.delete(any<String>())).called(1);
       });
 
@@ -147,7 +182,7 @@ void main() {
             .thenThrow(StateError('no element'));
 
         expect(
-          _api.deletePost(post.postData.id.toString()),
+          _api.deletePost(post.id.toString()),
           throwsA(isA<NoElementException>()),
         );
       });
@@ -166,7 +201,7 @@ void main() {
         when(() => _favoriteBox.delete(any<String>())).thenAnswer(
           (_) async => () {},
         );
-        await _api.removeFromFavorites(post.postData.id.toString());
+        await _api.removeFromFavorites(post.id.toString());
         verify(() => _favoriteBox.delete(any<String>())).called(1);
       });
 
@@ -180,7 +215,7 @@ void main() {
             .thenThrow(StateError('no element'));
 
         expect(
-          _api.removeFromFavorites(post.postData.id.toString()),
+          _api.removeFromFavorites(post.id.toString()),
           throwsA(isA<NoElementException>()),
         );
       });

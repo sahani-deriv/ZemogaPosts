@@ -5,13 +5,13 @@ void main() {
   group('Post', () {
     test('supports value comparisons', () {
       expect(
-        PostData(
+        Post(
           userId: 1,
           id: 1,
           title: 'Test Title',
           body: 'Test description of the post',
         ),
-        PostData(
+        Post(
           userId: 1,
           id: 1,
           title: 'Test Title',
@@ -22,7 +22,7 @@ void main() {
 
     test('has concise toString', () {
       expect(
-        PostData(
+        Post(
           userId: 1,
           id: 1,
           title: 'Test Title',

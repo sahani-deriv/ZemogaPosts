@@ -20,13 +20,13 @@ class PostsRemoteApiClient {
   /// Fetches all the posts.
   ///
   /// REST call: `GET /posts`
-  Future<List<PostData>> getAllPosts() async {
+  Future<List<Post>> getAllPosts() async {
     final response = await _makeRequest<List<Map<String, dynamic>>>(
       httpMethod: _HttpMethod.get,
       endpoint: '/posts',
     );
     try {
-      return response.map(PostData.fromJson).toList();
+      return response.map(Post.fromJson).toList();
     } catch (e) {
       throw JsonDeserializationException();
     }
@@ -35,13 +35,13 @@ class PostsRemoteApiClient {
   /// Fetches the comments of a post of given id.
   ///
   /// REST call: `GET /posts/:id/comments`
-  Future<List<PostComment>> getCommentsByPost({required String postId}) async {
+  Future<List<Comment>> getCommentsByPost({required String postId}) async {
     final response = await _makeRequest<List<Map<String, dynamic>>>(
       httpMethod: _HttpMethod.get,
       endpoint: '/posts/$postId/comments',
     );
     try {
-      return response.map(PostComment.fromJson).toList();
+      return response.map(Comment.fromJson).toList();
     } catch (e) {
       throw JsonDeserializationException();
     }

@@ -21,9 +21,13 @@ Post _$PostFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Post {
   @HiveField(0)
-  PostData get postData => throw _privateConstructorUsedError;
+  int get userId => throw _privateConstructorUsedError;
   @HiveField(1)
-  List<PostComment> get postComments => throw _privateConstructorUsedError;
+  int get id => throw _privateConstructorUsedError;
+  @HiveField(2)
+  String get title => throw _privateConstructorUsedError;
+  @HiveField(3)
+  String get body => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,10 +39,10 @@ abstract class $PostCopyWith<$Res> {
   factory $PostCopyWith(Post value, $Res Function(Post) then) =
       _$PostCopyWithImpl<$Res>;
   $Res call(
-      {@HiveField(0) PostData postData,
-      @HiveField(1) List<PostComment> postComments});
-
-  $PostDataCopyWith<$Res> get postData;
+      {@HiveField(0) int userId,
+      @HiveField(1) int id,
+      @HiveField(2) String title,
+      @HiveField(3) String body});
 }
 
 /// @nodoc
@@ -51,26 +55,29 @@ class _$PostCopyWithImpl<$Res> implements $PostCopyWith<$Res> {
 
   @override
   $Res call({
-    Object? postData = freezed,
-    Object? postComments = freezed,
+    Object? userId = freezed,
+    Object? id = freezed,
+    Object? title = freezed,
+    Object? body = freezed,
   }) {
     return _then(_value.copyWith(
-      postData: postData == freezed
-          ? _value.postData
-          : postData // ignore: cast_nullable_to_non_nullable
-              as PostData,
-      postComments: postComments == freezed
-          ? _value.postComments
-          : postComments // ignore: cast_nullable_to_non_nullable
-              as List<PostComment>,
+      userId: userId == freezed
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as int,
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      title: title == freezed
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      body: body == freezed
+          ? _value.body
+          : body // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
-  }
-
-  @override
-  $PostDataCopyWith<$Res> get postData {
-    return $PostDataCopyWith<$Res>(_value.postData, (value) {
-      return _then(_value.copyWith(postData: value));
-    });
   }
 }
 
@@ -80,11 +87,10 @@ abstract class _$$_PostCopyWith<$Res> implements $PostCopyWith<$Res> {
       __$$_PostCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@HiveField(0) PostData postData,
-      @HiveField(1) List<PostComment> postComments});
-
-  @override
-  $PostDataCopyWith<$Res> get postData;
+      {@HiveField(0) int userId,
+      @HiveField(1) int id,
+      @HiveField(2) String title,
+      @HiveField(3) String body});
 }
 
 /// @nodoc
@@ -98,47 +104,60 @@ class __$$_PostCopyWithImpl<$Res> extends _$PostCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? postData = freezed,
-    Object? postComments = freezed,
+    Object? userId = freezed,
+    Object? id = freezed,
+    Object? title = freezed,
+    Object? body = freezed,
   }) {
     return _then(_$_Post(
-      postData: postData == freezed
-          ? _value.postData
-          : postData // ignore: cast_nullable_to_non_nullable
-              as PostData,
-      postComments: postComments == freezed
-          ? _value._postComments
-          : postComments // ignore: cast_nullable_to_non_nullable
-              as List<PostComment>,
+      userId: userId == freezed
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as int,
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      title: title == freezed
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      body: body == freezed
+          ? _value.body
+          : body // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-@HiveType(typeId: 2, adapterName: 'PostAdapter')
+@HiveType(typeId: 0, adapterName: 'PostAdapter')
 class _$_Post implements _Post {
   _$_Post(
-      {@HiveField(0) required this.postData,
-      @HiveField(1) required final List<PostComment> postComments})
-      : _postComments = postComments;
+      {@HiveField(0) required this.userId,
+      @HiveField(1) required this.id,
+      @HiveField(2) required this.title,
+      @HiveField(3) required this.body});
 
   factory _$_Post.fromJson(Map<String, dynamic> json) => _$$_PostFromJson(json);
 
   @override
   @HiveField(0)
-  final PostData postData;
-  final List<PostComment> _postComments;
+  final int userId;
   @override
   @HiveField(1)
-  List<PostComment> get postComments {
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_postComments);
-  }
+  final int id;
+  @override
+  @HiveField(2)
+  final String title;
+  @override
+  @HiveField(3)
+  final String body;
 
   @override
   String toString() {
-    return 'Post(postData: $postData, postComments: $postComments)';
+    return 'Post(userId: $userId, id: $id, title: $title, body: $body)';
   }
 
   @override
@@ -146,17 +165,20 @@ class _$_Post implements _Post {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Post &&
-            const DeepCollectionEquality().equals(other.postData, postData) &&
-            const DeepCollectionEquality()
-                .equals(other._postComments, _postComments));
+            const DeepCollectionEquality().equals(other.userId, userId) &&
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.title, title) &&
+            const DeepCollectionEquality().equals(other.body, body));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(postData),
-      const DeepCollectionEquality().hash(_postComments));
+      const DeepCollectionEquality().hash(userId),
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(title),
+      const DeepCollectionEquality().hash(body));
 
   @JsonKey(ignore: true)
   @override
@@ -173,17 +195,25 @@ class _$_Post implements _Post {
 
 abstract class _Post implements Post {
   factory _Post(
-      {@HiveField(0) required final PostData postData,
-      @HiveField(1) required final List<PostComment> postComments}) = _$_Post;
+      {@HiveField(0) required final int userId,
+      @HiveField(1) required final int id,
+      @HiveField(2) required final String title,
+      @HiveField(3) required final String body}) = _$_Post;
 
   factory _Post.fromJson(Map<String, dynamic> json) = _$_Post.fromJson;
 
   @override
   @HiveField(0)
-  PostData get postData;
+  int get userId;
   @override
   @HiveField(1)
-  List<PostComment> get postComments;
+  int get id;
+  @override
+  @HiveField(2)
+  String get title;
+  @override
+  @HiveField(3)
+  String get body;
   @override
   @JsonKey(ignore: true)
   _$$_PostCopyWith<_$_Post> get copyWith => throw _privateConstructorUsedError;
