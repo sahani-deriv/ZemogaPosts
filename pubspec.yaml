@@ -14,7 +14,12 @@ dependencies:
   flutter_bloc: ^8.1.1
   flutter_localizations:
     sdk: flutter
+  hive_flutter: ^1.1.0
   intl: ^0.17.0
+  posts_api_client:
+    path: packages/posts_api_client
+  posts_repository:
+    path: packages/posts_repository
 
 dev_dependencies:
   bloc_test: ^9.1.0

@@ -6,7 +6,7 @@ import 'package:posts_api_client/posts_api_client.dart';
 ///{@endtemplate}
 class PostsLocalApiClient {
   ///{@macro posts_local_api_client}
-  PostsLocalApiClient({required HiveInterface hive}) : _hive = hive {
+  PostsLocalApiClient({HiveInterface? hive}) : _hive = hive ?? Hive {
     _openHiveBoxes();
   }
 
