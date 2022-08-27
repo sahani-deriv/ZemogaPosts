@@ -25,5 +25,5 @@ class PostsFailure extends Failure {
   int get hashCode => message.hashCode;
 
   @override
-  String toString() => 'ZemogaPostsFailure(message: $message)';
+  String toString() => 'PostsFailure(message: $message)';
 }
