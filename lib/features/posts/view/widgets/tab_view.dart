@@ -15,7 +15,6 @@ class AppTabView extends StatelessWidget {
     required this.pages,
     this.onTab,
     required this.onTapRefresh,
-    this.isLoading = false,
   });
 
   /// The title of the tab view.
@@ -33,9 +32,6 @@ class AppTabView extends StatelessWidget {
   ///The callback called when a refresh icon is tapped.
   final VoidCallback onTapRefresh;
 
-  /// Loading status of the refresh button
-  final bool isLoading;
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -46,20 +42,12 @@ class AppTabView extends StatelessWidget {
         appBar: AppBar(
           actions: [
             IconButton(
-              icon: isLoading
-                  ? SizedBox(
-                      height: 24.h,
-                      width: 20.w,
-                      child: const CircularProgressIndicator(
-                        color: CustomColor.blue90,
-                      ),
-                    )
-                  : Icon(
-                      Icons.refresh,
-                      size: 24.h,
-                    ),
+              icon: Icon(
+                Icons.refresh,
+                size: 24.h,
+              ),
               color: CustomColor.blue90,
-              onPressed: isLoading ? null : onTapRefresh,
+              onPressed: onTapRefresh,
             ),
           ],
           backgroundColor: CustomColor.white,

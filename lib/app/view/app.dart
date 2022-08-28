@@ -7,6 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:posts_repository/posts_repository.dart';
@@ -51,6 +52,7 @@ class AppView extends StatelessWidget {
               accentColor: const Color(0xFF13B9FF),
             ),
           ),
+          builder: EasyLoading.init(),
           debugShowCheckedModeBanner: false,
           localizationsDelegates: const [
             AppLocalizations.delegate,

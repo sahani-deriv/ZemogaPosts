@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:posts_repository/posts_repository.dart';
 import 'package:zemoga_posts/app/components/custom_snack_bar.dart';
 import 'package:zemoga_posts/features/posts/cubit/post_cubit.dart';
@@ -37,7 +38,7 @@ class PostsListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: BlocConsumer<PostCubit, PostState>(
+      child: BlocListener<PostCubit, PostState>(
         listener: (context, state) {
           if (state.message != null) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -50,10 +51,15 @@ class PostsListView extends StatelessWidget {
               ),
             );
           }
+          if (state.status == PostStatus.pending) {
+            EasyLoading.show();
+          }
+          if (state.status == PostStatus.success) {
+            EasyLoading.dismiss();
+          }
         },
-        builder: (context, state) => AppTabView(
+        child: AppTabView(
           onTapRefresh: () => context.read<PostCubit>().refetchPosts(),
-          isLoading: state.status == PostStatus.pending,
           title: 'Zemoga',
           tabs: const [
             Tab(text: 'All'),
