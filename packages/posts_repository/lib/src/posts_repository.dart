@@ -22,6 +22,9 @@ abstract class PostsRepository {
   ///Fetches all the posts from the api client.
   Future<GetPostsResult> getAllPosts();
 
+  /// Re-fetches the posts
+  Future<GetPostsResult> refetchPosts();
+
   ///Fetches all the favorite posts from the api client.
   GetPostsResult getAllFavoritePosts();
 
@@ -35,7 +38,7 @@ abstract class PostsRepository {
   void deleteAllPosts();
 
   ///Removes a favorite post from the local database.
-  VoidResult removeFromFavorites({required String postId});
+  VoidResult removeFromFavorites({required Post post});
 
   /// Fetches a comment of its specific post.
   Future<GetCommentsByIdResult> getCommentsById({required int postId});

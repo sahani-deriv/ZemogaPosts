@@ -17,7 +17,9 @@ class PostsListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<PostCubit>(
       create: (context) =>
-          PostCubit(postsRepository: context.read<PostsRepository>()),
+          PostCubit(postsRepository: context.read<PostsRepository>())
+            ..getAllFavoritePosts()
+            ..getAllPosts(),
       child: const PostsListView(),
     );
   }
@@ -33,17 +35,35 @@ class PostsListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SafeArea(
-      child: AppTabView(
-        title: 'Zemoga Posts',
-        tabs: [
-          Tab(text: 'Posts'),
-          Tab(text: 'Favorites'),
-        ],
-        pages: [
-          PostsTab(),
-          FavoritesTab(),
-        ],
+    return SafeArea(
+      child: BlocBuilder<PostCubit, PostState>(
+        builder: (context, state) {
+          if (state.status == PostStatus.pending) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (state.status == PostStatus.failure) {
+            return const Center(
+              child: Text('Error'),
+            );
+          } else {
+            return AppTabView(
+              title: 'Zemoga Posts',
+              tabs: const [
+                Tab(text: 'All'),
+                Tab(text: 'Favorites'),
+              ],
+              pages: [
+                PostsTab(
+                  posts: state.posts,
+                  favoritePosts: state.favoritePosts,
+                ),
+                const FavoritesTab(),
+              ],
+            );
+          }
+        },
       ),
     );
   }

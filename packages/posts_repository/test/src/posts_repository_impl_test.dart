@@ -34,7 +34,7 @@ void main() {
     late MockLocalApiClient _localApiClient;
     late PostsRepository _repository;
 
-    setUp(() {
+    setUpAll(() {
       _remoteApiClient = MockRemoteApiClient();
       _localApiClient = MockLocalApiClient();
       _repository = PostRepositoryImpl(
@@ -99,6 +99,8 @@ void main() {
     });
     group('.addPostToFavorites', () {
       test('adds a post to favorite posts', () async {
+        when(() => _localApiClient.deletePost(any<String>()))
+            .thenAnswer((_) async => () {});
         when(() => _localApiClient.addPostToFavorites(posts.first)).thenAnswer(
           (_) => () {},
         );
@@ -144,8 +146,11 @@ void main() {
             .thenAnswer(
           (_) async => () {},
         );
+        when(() => _localApiClient.addPost(posts.first)).thenAnswer(
+          (_) async => () {},
+        );
         expect(
-          _repository.removeFromFavorites(postId: '1'),
+          _repository.removeFromFavorites(post: posts.first),
           Result<PostsFailure, void>.success(null),
         );
       });
@@ -155,7 +160,7 @@ void main() {
           NoElementException(),
         );
         expect(
-          _repository.removeFromFavorites(postId: '1'),
+          _repository.removeFromFavorites(post: posts.first),
           Result<PostsFailure, void>.failure(
             PostsFailure("Couldn't remove post from favorites."),
           ),
@@ -183,6 +188,38 @@ void main() {
           await _repository.getCommentsById(postId: 1),
           Result<PostsFailure, List<Comment>>.failure(
             PostsFailure('Error fetching comments for the post.'),
+          ),
+        );
+      });
+    });
+
+    group('.refetchPosts', () {
+      test('re-fetches the posts', () async {
+        when(() => _localApiClient.deleteAllPosts())
+            .thenAnswer((invocation) {});
+        when(() => _remoteApiClient.getAllPosts()).thenAnswer(
+          (_) async => posts,
+        );
+        when(() => _localApiClient.getAllPosts()).thenAnswer(
+          (_) => posts,
+        );
+
+        expect(
+          await _repository.refetchPosts(),
+          Result<PostsFailure, List<Post>>.success(posts),
+        );
+      });
+      test('returns result with failure message', () async {
+        when(() => _localApiClient.deleteAllPosts())
+            .thenAnswer((invocation) {});
+        when(() => _remoteApiClient.getAllPosts()).thenThrow(
+          InvalidRequestException(),
+        );
+
+        expect(
+          await _repository.refetchPosts(),
+          Result<PostsFailure, List<Post>>.failure(
+            PostsFailure("Couldn't fetch posts."),
           ),
         );
       });

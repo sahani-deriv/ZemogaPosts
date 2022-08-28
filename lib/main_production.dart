@@ -14,8 +14,10 @@ import 'package:zemoga_posts/bootstrap.dart';
 void main() async {
   await Hive.initFlutter();
 
-  final _postsRemoteApiClient = PostsRemoteApiClient();
-  final _postsLocalApiClient = PostsLocalApiClient();
+  final _postsRemoteApiClient = PostsRemoteApiClient(
+    dio: Dio(),
+  );
+  final _postsLocalApiClient = await PostsLocalApiClient.init();
   final _postsRepository = PostRepositoryImpl(
     postsRemoteApiClient: _postsRemoteApiClient,
     localApiClient: _postsLocalApiClient,

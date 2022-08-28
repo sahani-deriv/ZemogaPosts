@@ -6,17 +6,20 @@ import 'package:posts_api_client/posts_api_client.dart';
 ///{@endtemplate}
 class PostsLocalApiClient {
   ///{@macro posts_local_api_client}
-  PostsLocalApiClient({HiveInterface? hive}) : _hive = hive ?? Hive {
-    _openHiveBoxes();
-  }
+  PostsLocalApiClient._();
 
-  final HiveInterface _hive;
+  static late final HiveInterface _hive;
 
-  ///Opens all the hive boxes
-  Future<void> _openHiveBoxes() async {
+  ///{@macro posts_local_api_client}
+  static Future<PostsLocalApiClient> init({HiveInterface? hive}) async {
+    _hive = (hive ?? Hive)
+      ..registerAdapter(PostAdapter())
+      ..registerAdapter(CommentAdapter());
     await _hive.openBox<Post>('posts');
     await _hive.openBox<List<Comment>>('comments');
     await _hive.openBox<Post>('favorites');
+
+    return Future.value(PostsLocalApiClient._());
   }
 
   /// Adds item to the hive box

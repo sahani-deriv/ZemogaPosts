@@ -17,6 +17,7 @@ class PostRepositoryImpl implements PostsRepository {
 
   @override
   void addPostToFavorites({required Post post}) {
+    _localApiClient.deletePost(post.id.toString());
     return _localApiClient.addPostToFavorites(post);
   }
 
@@ -65,9 +66,11 @@ class PostRepositoryImpl implements PostsRepository {
   }
 
   @override
-  VoidResult removeFromFavorites({required String postId}) {
+  VoidResult removeFromFavorites({required Post post}) {
     try {
-      _localApiClient.removeFromFavorites(postId);
+      _localApiClient
+        ..removeFromFavorites(post.id.toString())
+        ..addPost(post);
       return const Result.success(null);
     } catch (e) {
       return Result.failure(
@@ -89,6 +92,20 @@ class PostRepositoryImpl implements PostsRepository {
       return Result.failure(
         PostsFailure('Error fetching comments for the post.'),
       );
+    }
+  }
+
+  @override
+  Future<GetPostsResult> refetchPosts() async {
+    try {
+      _localApiClient.deleteAllPosts();
+      final posts = await _remoteApiClient.getAllPosts();
+      for (final post in posts) {
+        _localApiClient.addPost(post);
+      }
+      return Result.success(_localApiClient.getAllPosts());
+    } catch (e) {
+      return Result.failure(PostsFailure("Couldn't fetch posts."));
     }
   }
 }

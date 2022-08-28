@@ -139,7 +139,7 @@ void main() {
         act: (cubit) {
           when(
             () => _postsRepository.removeFromFavorites(
-              postId: posts.first.id.toString(),
+              post: posts.first,
             ),
           ).thenAnswer(
             (invocation) => const Result.success(null),
@@ -150,7 +150,7 @@ void main() {
         expect: () => <PostState>[
           PostState.pending(posts: const [], favoritePosts: posts),
           PostState.success(
-            posts: const [],
+            posts: [posts.first],
             favoritePosts: posts
               ..remove(
                 posts.first,
@@ -177,7 +177,7 @@ void main() {
           );
           when(
             () => _postsRepository.removeFromFavorites(
-              postId: posts.first.id.toString(),
+              post: posts.first,
             ),
           ).thenAnswer(
             (invocation) => Result.failure(
@@ -265,7 +265,7 @@ void main() {
           );
           cubit.deletePost(post: posts.first);
         },
-        seed: () => PostState.success(posts: const [], favoritePosts: posts),
+        seed: () => PostState.success(posts: posts, favoritePosts: const []),
         expect: () => <PostState>[
           PostState.pending(posts: posts, favoritePosts: const []),
           PostState.failure(
@@ -277,6 +277,22 @@ void main() {
       );
     });
     group('.addPostToFavorites', () {
+      final posts = List.generate(
+        2,
+        (index) => Post(
+          userId: index,
+          id: index,
+          title: 'Test Title',
+          body: 'Test description of the post',
+        ),
+      );
+
+      final post = Post(
+        userId: 0,
+        id: 0,
+        title: 'Test Title',
+        body: 'Test description of the post',
+      );
       blocTest<PostCubit, PostState>(
         'emits success state with updated favorites list',
         build: () {
@@ -285,20 +301,11 @@ void main() {
           );
         },
         act: (cubit) {
-          final posts = List.generate(
-            2,
-            (index) => Post(
-              userId: index,
-              id: index,
-              title: 'Test Title',
-              body: 'Test description of the post',
-            ),
-          );
-          when(() => _postsRepository.addPostToFavorites(post: posts.first))
+          when(() => _postsRepository.addPostToFavorites(post: post))
               .thenAnswer(
             (invocation) => () {},
           );
-          cubit.addPostToFavorites(post: posts.first);
+          cubit.addPostToFavorites(post: post);
         },
         seed: () => PostState.success(posts: const [], favoritePosts: posts),
         expect: () => <PostState>[
@@ -307,7 +314,7 @@ void main() {
             posts: const [],
             favoritePosts: posts
               ..add(
-                posts.first,
+                post,
               ),
           ),
         ],

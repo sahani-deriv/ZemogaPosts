@@ -85,8 +85,8 @@ class PostCubit extends Cubit<PostState> {
     _postsRepository.addPostToFavorites(post: post);
     emit(
       PostState.success(
-        posts: state.posts,
-        favoritePosts: state.favoritePosts..add(post),
+        posts: [...state.posts]..remove(post),
+        favoritePosts: [...state.favoritePosts, post],
       ),
     );
   }
@@ -99,12 +99,12 @@ class PostCubit extends Cubit<PostState> {
         favoritePosts: state.favoritePosts,
       ),
     );
-    _postsRepository.removeFromFavorites(postId: post.id.toString()).when(
+    _postsRepository.removeFromFavorites(post: post).when(
       success: (_) {
         emit(
           PostState.success(
-            posts: state.posts,
-            favoritePosts: state.favoritePosts..remove(post),
+            posts: [...state.posts, post],
+            favoritePosts: [...state.favoritePosts]..remove(post),
           ),
         );
       },
@@ -150,7 +150,7 @@ class PostCubit extends Cubit<PostState> {
       success: (_) {
         emit(
           PostState.success(
-            posts: state.posts..remove(post),
+            posts: [...state.posts]..remove(post),
             favoritePosts: state.favoritePosts,
           ),
         );

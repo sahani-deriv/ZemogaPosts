@@ -33,7 +33,7 @@ void main() {
     late Box<List<Comment>> _commentBox;
     late PostsLocalApiClient _api;
 
-    setUp(() {
+    setUpAll(() async {
       _mockHive = MockHive();
       _postBox = MockPostBox<Post>();
       _commentBox = MockCommentBox<List<Comment>>();
@@ -55,7 +55,7 @@ void main() {
         (_) async => _favoriteBox,
       );
       when(() => _mockHive.box<Post>(any())).thenReturn(_favoriteBox);
-      _api = PostsLocalApiClient(
+      _api = await PostsLocalApiClient.init(
         hive: _mockHive,
       );
     });

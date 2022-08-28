@@ -10,7 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:posts_repository/posts_repository.dart';
-import 'package:zemoga_posts/features/posts/view/posts_list_page.dart';
+import 'package:zemoga_posts/features/posts/view/pages/posts_list_page.dart';
 import 'package:zemoga_posts/l10n/l10n.dart';
 
 /// {@template app}

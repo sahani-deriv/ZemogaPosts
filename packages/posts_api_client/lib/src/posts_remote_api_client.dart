@@ -7,8 +7,8 @@ import 'package:posts_api_client/src/models/models.dart';
 /// {@endtemplate}
 class PostsRemoteApiClient {
   /// {@macro posts_remote_api_client}
-  PostsRemoteApiClient({Dio? dio})
-      : _dio = dio ?? Dio()
+  PostsRemoteApiClient({required Dio dio})
+      : _dio = dio
           ..options = BaseOptions(
             baseUrl: _kBaseUrl,
             contentType: Headers.jsonContentType,
@@ -69,7 +69,7 @@ class PostsRemoteApiClient {
     try {
       switch (httpMethod) {
         case _HttpMethod.get:
-          response = await _dio.get<T>(endpoint);
+          response = await _dio.get<dynamic>(endpoint);
           break;
         case _HttpMethod.post:
           response = await _dio.post<T>(endpoint, data: data);
@@ -90,7 +90,11 @@ class PostsRemoteApiClient {
     }
 
     try {
-      return response.data as T;
+      if (response.data is List) {
+        return (response.data as List).cast<Map<String, dynamic>>() as T;
+      } else {
+        return response.data as T;
+      }
     } catch (_) {
       throw const BadResponseException();
     }
