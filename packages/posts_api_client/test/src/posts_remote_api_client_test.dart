@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:posts_api_client/posts_api_client.dart';
@@ -49,7 +48,7 @@ void main() {
       });
 
       test('fetches all the posts', () {
-        when(() => _dio.get<List<Map<String, dynamic>>>(_url)).thenAnswer(
+        when(() => _dio.get<dynamic>(_url)).thenAnswer(
           (_) async => Response<List<Map<String, dynamic>>>(
             statusCode: 200,
             data: mockPosts.map((e) => e.toJson()).toList(),
@@ -62,11 +61,11 @@ void main() {
           completion(equals(mockPosts)),
         );
 
-        verify(() => _dio.get<List<Map<String, dynamic>>>(_url)).called(1);
+        verify(() => _dio.get<dynamic>(_url)).called(1);
       });
 
       test('throws InvalidRequestOptions when status code is not 200', () {
-        when(() => _dio.get<List<Map<String, dynamic>>>(_url)).thenAnswer(
+        when(() => _dio.get<dynamic>(_url)).thenAnswer(
           (_) async => Response<List<Map<String, dynamic>>>(
             statusCode: 400,
             requestOptions: _requestOptions,
@@ -78,11 +77,11 @@ void main() {
           throwsA(isA<InvalidRequestException>()),
         );
 
-        verify(() => _dio.get<List<Map<String, dynamic>>>(_url)).called(1);
+        verify(() => _dio.get<dynamic>(_url)).called(1);
       });
       test('throws JsonDeserializationException when decoding response fails',
           () {
-        when(() => _dio.get<List<Map<String, dynamic>>>(_url)).thenAnswer(
+        when(() => _dio.get<dynamic>(_url)).thenAnswer(
           (_) async => Response<List<Map<String, dynamic>>>(
             statusCode: 200,
             data: [{}],
@@ -95,7 +94,7 @@ void main() {
           throwsA(isA<JsonDeserializationException>()),
         );
 
-        verify(() => _dio.get<List<Map<String, dynamic>>>(_url)).called(1);
+        verify(() => _dio.get<dynamic>(_url)).called(1);
       });
     });
 
@@ -111,7 +110,7 @@ void main() {
       });
 
       test('fetches all comments of a particular post', () {
-        when(() => _dio.get<List<Map<String, dynamic>>>(_url)).thenAnswer(
+        when(() => _dio.get<dynamic>(_url)).thenAnswer(
           (_) async => Response<List<Map<String, dynamic>>>(
             statusCode: 200,
             data: mockComments.map((e) => e.toJson()).toList(),
@@ -126,7 +125,7 @@ void main() {
       });
 
       test('throws InvalidRequestOptions when status code is not 200', () {
-        when(() => _dio.get<List<Map<String, dynamic>>>(_url)).thenAnswer(
+        when(() => _dio.get<dynamic>(_url)).thenAnswer(
           (_) async => Response<List<Map<String, dynamic>>>(
             statusCode: 400,
             requestOptions: _requestOptions,
@@ -138,12 +137,12 @@ void main() {
           throwsA(isA<InvalidRequestException>()),
         );
 
-        verify(() => _dio.get<List<Map<String, dynamic>>>(_url)).called(1);
+        verify(() => _dio.get<dynamic>(_url)).called(1);
       });
 
       test('throws JsonDeserializationException when decoding response fails',
           () {
-        when(() => _dio.get<List<Map<String, dynamic>>>(_url)).thenAnswer(
+        when(() => _dio.get<dynamic>(_url)).thenAnswer(
           (_) async => Response<List<Map<String, dynamic>>>(
             statusCode: 200,
             data: [{}],
@@ -156,7 +155,7 @@ void main() {
           throwsA(isA<JsonDeserializationException>()),
         );
 
-        verify(() => _dio.get<List<Map<String, dynamic>>>(_url)).called(1);
+        verify(() => _dio.get<dynamic>(_url)).called(1);
       });
     });
 

@@ -4,8 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zemoga_posts/app/components/custom_snack_bar.dart';
 import 'package:zemoga_posts/app/theme/colors.dart';
 import 'package:zemoga_posts/features/posts/cubit/post_cubit.dart';
-import 'package:zemoga_posts/features/posts/view/pages/post_details_page.dart';
-import 'package:zemoga_posts/features/posts/view/widgets/post_card.dart';
+import 'package:zemoga_posts/features/posts/view/widgets/functional_post_card.dart';
 
 ///{@template favorites_tab}
 ///Tab view that displays list of favorites posts
@@ -57,26 +56,9 @@ class FavoritesTab extends StatelessWidget {
                     shrinkWrap: true,
                     itemCount: state.favoritePosts.length,
                     itemBuilder: (context, index) {
-                      return PostCard(
-                        onTap: () => Navigator.of(context).push(
-                          MaterialPageRoute<Widget>(
-                            builder: (_) => PostDetailsPage(
-                              isFavorite: true,
-                              onTapStar: () => context
-                                  .read<PostCubit>()
-                                  .removePostFromFavorites(
-                                    post: state.favoritePosts[index],
-                                  ),
-                              onTapDelete: () =>
-                                  context.read<PostCubit>().deletePost(
-                                        post: state.favoritePosts[index],
-                                      ),
-                              post: state.favoritePosts[index],
-                            ),
-                          ),
-                        ),
+                      return FunctionalPostCard(
+                        post: state.favoritePosts[index],
                         isFavorite: true,
-                        title: state.favoritePosts[index].title,
                       );
                     },
                   ),

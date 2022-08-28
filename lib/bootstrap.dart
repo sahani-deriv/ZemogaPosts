@@ -11,6 +11,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
 
+/// A [BlocObserver] that logs any bloc errors & state changes.
 class AppBlocObserver extends BlocObserver {
   @override
   void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
@@ -25,6 +26,8 @@ class AppBlocObserver extends BlocObserver {
   }
 }
 
+/// Bootstrap is responsible for any common setup and calls
+/// [runApp] with the widget returned by [builder] in an error zone.
 Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   FlutterError.onError = (details) {
     log(details.exceptionAsString(), stackTrace: details.stack);

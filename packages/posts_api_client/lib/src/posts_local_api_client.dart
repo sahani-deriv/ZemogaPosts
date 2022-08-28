@@ -48,7 +48,10 @@ class PostsLocalApiClient {
   /// Adds comment with its key [postId] to the hive box
   void addComment({required List<Comment> comments, required int postId}) =>
       _addToBox<List<dynamic>>(
-          item: comments, boxName: 'comments', key: postId);
+        item: comments,
+        boxName: 'comments',
+        key: postId,
+      );
 
   /// Adds favorite posts to the hive box
   void addPostToFavorites(Post post) =>

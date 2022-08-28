@@ -12,23 +12,23 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.1
+  flutter_easyloading: ^3.0.5
   flutter_localizations:
     sdk: flutter
+  flutter_screenutil: ^5.5.3+2
   hive_flutter: ^1.1.0
   intl: ^0.17.0
   posts_api_client:
     path: packages/posts_api_client
   posts_repository:
     path: packages/posts_repository
-  flutter_screenutil: ^5.5.3+2
-  flutter_easyloading: ^3.0.5
 
 dev_dependencies:
   bloc_test: ^9.1.0
-  pretty_dio_logger: ^1.1.1
   flutter_test:
     sdk: flutter
   mocktail: ^0.3.0
+  pretty_dio_logger: ^1.1.1
   very_good_analysis: ^3.0.1
 
 flutter:

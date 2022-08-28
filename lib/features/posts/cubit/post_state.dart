@@ -109,6 +109,7 @@ class PostState {
     }
   }
 
+  /// Makes callback not required and can use [orElse] method when null.
   T maybeWhen<T>({
     T Function(List<Post> posts, List<Post> favorites)? pending,
     T Function(List<Post> posts, List<Post> favorites, List<Comment>? comments)?

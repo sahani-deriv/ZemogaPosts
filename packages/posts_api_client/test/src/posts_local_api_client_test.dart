@@ -30,13 +30,13 @@ void main() {
     late HiveInterface _mockHive;
     late Box<Post> _postBox;
     late Box<Post> _favoriteBox;
-    late Box<List<Comment>> _commentBox;
+    late Box<List<dynamic>> _commentBox;
     late PostsLocalApiClient _api;
 
     setUpAll(() async {
       _mockHive = MockHive();
       _postBox = MockPostBox<Post>();
-      _commentBox = MockCommentBox<List<Comment>>();
+      _commentBox = MockCommentBox<List<dynamic>>();
       _favoriteBox = MockFavoriteBox<Post>();
 
       when(() => _mockHive.openBox<Post>('posts')).thenAnswer(
@@ -45,10 +45,10 @@ void main() {
 
       when(() => _mockHive.box<Post>('posts')).thenReturn(_postBox);
 
-      when(() => _mockHive.openBox<List<Comment>>('comments')).thenAnswer(
+      when(() => _mockHive.openBox<List<dynamic>>('comments')).thenAnswer(
         (_) async => _commentBox,
       );
-      when(() => _mockHive.box<List<Comment>>('comments'))
+      when(() => _mockHive.box<List<dynamic>>('comments'))
           .thenReturn(_commentBox);
 
       when(() => _mockHive.openBox<Post>('favorites')).thenAnswer(
@@ -96,10 +96,10 @@ void main() {
 
     group('.addComment', () {
       test('adds comment with its key as postId to the hive box', () async {
-        when(() => _mockHive.openBox<List<Comment>>('Comments')).thenAnswer(
+        when(() => _mockHive.openBox<List<dynamic>>('Comments')).thenAnswer(
           (_) async => _commentBox,
         );
-        when(() => _mockHive.box<List<Comment>>('Comments'))
+        when(() => _mockHive.box<List<dynamic>>('Comments'))
             .thenReturn(_commentBox);
 
         when(() => _commentBox.put(any<int>(), [comment])).thenAnswer(
@@ -111,10 +111,10 @@ void main() {
     });
     group('.getCommentsByPostId', () {
       test('returns all the comments of the specific post', () async {
-        when(() => _mockHive.openBox<List<Comment>>('comments')).thenAnswer(
+        when(() => _mockHive.openBox<List<dynamic>>('comments')).thenAnswer(
           (_) async => _commentBox,
         );
-        when(() => _mockHive.box<List<Comment>>('comments'))
+        when(() => _mockHive.box<List<dynamic>>('comments'))
             .thenReturn(_commentBox);
 
         when(() => _commentBox.get(1)).thenAnswer(

@@ -82,6 +82,57 @@ void main() {
         ],
       );
     });
+    group('.refetchPosts', () {
+      blocTest<PostCubit, PostState>(
+        'emits success state with re-fetched posts on success result',
+        build: () {
+          return PostCubit(
+            postsRepository: _postsRepository,
+          );
+        },
+        act: (cubit) {
+          when(() => _postsRepository.refetchPosts()).thenAnswer(
+            (invocation) async =>
+                Result<PostsFailure, List<Post>>.success(posts),
+          );
+          cubit.refetchPosts();
+        },
+        expect: () => <PostState>[
+          PostState.pending(posts: const [], favoritePosts: const []),
+          PostState.success(
+            posts: posts,
+            favoritePosts: const [],
+            message: 'Successfully re-fetched posts!',
+          ),
+        ],
+      );
+      blocTest<PostCubit, PostState>(
+        'emits failure state with failure message on failure result',
+        build: () {
+          return PostCubit(
+            postsRepository: _postsRepository,
+          );
+        },
+        act: (cubit) {
+          when(() => _postsRepository.refetchPosts()).thenAnswer(
+            (invocation) async => Result<PostsFailure, List<Post>>.failure(
+              PostsFailure(
+                'Failure message',
+              ),
+            ),
+          );
+          cubit.refetchPosts();
+        },
+        expect: () => <PostState>[
+          PostState.pending(posts: const [], favoritePosts: const []),
+          PostState.failure(
+            posts: const [],
+            favoritePosts: const [],
+            message: 'Failure message',
+          ),
+        ],
+      );
+    });
     group('.getAllFavoritePosts', () {
       blocTest<PostCubit, PostState>(
         'emits success state with favorite posts on success result',
@@ -155,6 +206,7 @@ void main() {
               ..remove(
                 posts.first,
               ),
+            message: 'Removed from favorites!',
           ),
         ],
       );
@@ -219,7 +271,7 @@ void main() {
         act: (cubit) {
           when(
             () => _postsRepository.deletePost(
-              postId: postList.first.id.toString(),
+              post: postList.first,
             ),
           ).thenAnswer(
             (invocation) => const Result.success(null),
@@ -232,6 +284,7 @@ void main() {
           PostState.success(
             posts: postList..remove(postList.first),
             favoritePosts: const [],
+            message: 'Successfully deleted post!',
           ),
         ],
       );
@@ -254,7 +307,7 @@ void main() {
           );
           when(
             () => _postsRepository.deletePost(
-              postId: posts.first.id.toString(),
+              post: posts.first,
             ),
           ).thenAnswer(
             (invocation) => Result.failure(
@@ -277,16 +330,6 @@ void main() {
       );
     });
     group('.addPostToFavorites', () {
-      final posts = List.generate(
-        2,
-        (index) => Post(
-          userId: index,
-          id: index,
-          title: 'Test Title',
-          body: 'Test description of the post',
-        ),
-      );
-
       final post = Post(
         userId: 0,
         id: 0,
@@ -307,15 +350,13 @@ void main() {
           );
           cubit.addPostToFavorites(post: post);
         },
-        seed: () => PostState.success(posts: const [], favoritePosts: posts),
+        seed: () => PostState.success(posts: const [], favoritePosts: const []),
         expect: () => <PostState>[
-          PostState.pending(posts: const [], favoritePosts: posts),
+          PostState.pending(posts: const [], favoritePosts: const []),
           PostState.success(
             posts: const [],
-            favoritePosts: posts
-              ..add(
-                post,
-              ),
+            favoritePosts: [post],
+            message: 'Added to favorites!',
           ),
         ],
       );
@@ -340,6 +381,7 @@ void main() {
           PostState.success(
             posts: const [],
             favoritePosts: const [],
+            message: 'Successfully deleted all posts!',
           ),
         ],
       );
