@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:posts_repository/posts_repository.dart';
+import 'package:zemoga_posts/app/components/custom_snack_bar.dart';
 import 'package:zemoga_posts/features/posts/cubit/post_cubit.dart';
 import 'package:zemoga_posts/features/posts/view/tabs/tabs.dart';
 import 'package:zemoga_posts/features/posts/view/widgets/tab_view.dart';
@@ -36,35 +37,33 @@ class PostsListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: BlocBuilder<PostCubit, PostState>(
-        builder: (context, state) {
-          if (state.status == PostStatus.pending) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          if (state.status == PostStatus.failure) {
-            return const Center(
-              child: Text('Error'),
-            );
-          } else {
-            return AppTabView(
-              onTapRefresh: () => () {},
-              title: 'Zemoga Posts',
-              tabs: const [
-                Tab(text: 'All'),
-                Tab(text: 'Favorites'),
-              ],
-              pages: [
-                PostsTab(
-                  posts: state.posts,
-                  favoritePosts: state.favoritePosts,
+      child: BlocConsumer<PostCubit, PostState>(
+        listener: (context, state) {
+          if (state.message != null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                duration: const Duration(seconds: 1),
+                backgroundColor: Colors.white,
+                content: CustomSnackBar(
+                  message: state.message!,
                 ),
-                const FavoritesTab(),
-              ],
+              ),
             );
           }
         },
+        builder: (context, state) => AppTabView(
+          onTapRefresh: () => context.read<PostCubit>().refetchPosts(),
+          isLoading: state.status == PostStatus.pending,
+          title: 'Zemoga',
+          tabs: const [
+            Tab(text: 'All'),
+            Tab(text: 'Favorites'),
+          ],
+          pages: const [
+            PostsTab(),
+            FavoritesTab(),
+          ],
+        ),
       ),
     );
   }

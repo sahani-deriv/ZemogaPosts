@@ -9,11 +9,13 @@ import 'package:zemoga_posts/app/theme/text_styles.dart';
 class AppTabView extends StatelessWidget {
   ///{@macro app_tab_view}
   const AppTabView({
+    super.key,
     this.title,
     required this.tabs,
     required this.pages,
     this.onTab,
     required this.onTapRefresh,
+    this.isLoading = false,
   });
 
   /// The title of the tab view.
@@ -31,6 +33,9 @@ class AppTabView extends StatelessWidget {
   ///The callback called when a refresh icon is tapped.
   final VoidCallback onTapRefresh;
 
+  /// Loading status of the refresh button
+  final bool isLoading;
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -41,12 +46,20 @@ class AppTabView extends StatelessWidget {
         appBar: AppBar(
           actions: [
             IconButton(
-              icon: Icon(
-                Icons.refresh,
-                size: 24.h,
-              ),
+              icon: isLoading
+                  ? SizedBox(
+                      height: 24.h,
+                      width: 20.w,
+                      child: const CircularProgressIndicator(
+                        color: CustomColor.blue90,
+                      ),
+                    )
+                  : Icon(
+                      Icons.refresh,
+                      size: 24.h,
+                    ),
               color: CustomColor.blue90,
-              onPressed: () {},
+              onPressed: isLoading ? null : onTapRefresh,
             ),
           ],
           backgroundColor: CustomColor.white,
@@ -57,11 +70,10 @@ class AppTabView extends StatelessWidget {
             child: Align(
               alignment: Alignment.centerLeft,
               child: TabBar(
-                indicator: const CustomTabIndicator(
-                  indicatorColor: CustomColor.black25,
-                  indicatorHeight: 4,
-                  cornerRadius: 4,
+                indicator: UnderlineTabIndicator(
+                  borderSide: BorderSide(width: 2.h),
                 ),
+
                 onTap: onTab,
                 isScrollable: true,
                 // labelPadding: EdgeInsets.only(left: 16.w, right: 20.w),
@@ -92,63 +104,6 @@ class AppTabView extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-///{@template custom_tab_indicator}
-/// Customized tab indicator for the app.
-/// {@endtemplate}
-class CustomTabIndicator extends Decoration {
-  ///{@macro custom_tab_indicator}
-  const CustomTabIndicator({
-    required this.indicatorHeight,
-    required this.indicatorColor,
-    required this.cornerRadius,
-  });
-
-  /// height of the indicator
-  final double indicatorHeight;
-
-  /// color of the indicator
-  final Color? indicatorColor;
-
-  /// corner radius of the indicator
-  final double cornerRadius;
-
-  @override
-  _CustomTabBarIndicatorPainter createBoxPainter([VoidCallback? onChanged]) {
-    return _CustomTabBarIndicatorPainter(this, onChanged);
-  }
-}
-
-class _CustomTabBarIndicatorPainter extends BoxPainter {
-  _CustomTabBarIndicatorPainter(this.decoration, VoidCallback? onChanged)
-      : super(onChanged);
-  final CustomTabIndicator decoration;
-
-  @override
-  void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
-    late Rect rect;
-
-    rect = Offset(
-          offset.dx + 6,
-          configuration.size!.height - decoration.indicatorHeight,
-        ) &
-        Size(configuration.size!.width - 12, decoration.indicatorHeight);
-
-    final paint = Paint()
-      ..color = decoration.indicatorColor ?? const Color(0xff1967d2)
-      ..style = PaintingStyle.fill;
-    canvas.drawRRect(
-      RRect.fromRectAndCorners(
-        rect,
-        topRight: Radius.circular(decoration.cornerRadius),
-        topLeft: Radius.circular(decoration.cornerRadius),
-        bottomLeft: Radius.circular(decoration.cornerRadius),
-        bottomRight: Radius.circular(decoration.cornerRadius),
-      ),
-      paint,
     );
   }
 }

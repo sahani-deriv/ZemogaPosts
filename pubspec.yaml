@@ -21,6 +21,7 @@ dependencies:
   posts_repository:
     path: packages/posts_repository
   flutter_screenutil: ^5.5.3+2
+  flutter_easyloading: ^3.0.5
 
 dev_dependencies:
   bloc_test: ^9.1.0

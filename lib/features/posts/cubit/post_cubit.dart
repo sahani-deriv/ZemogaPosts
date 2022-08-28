@@ -34,7 +34,9 @@ class PostCubit extends Cubit<PostState> {
     final result = await _postsRepository.getAllPosts();
     result.when(
       success: (val) {
-        emit(PostState.success(posts: val, favoritePosts: state.favoritePosts));
+        emit(
+          PostState.success(posts: val, favoritePosts: state.favoritePosts),
+        );
       },
       failure: (failure) {
         emit(
@@ -74,7 +76,7 @@ class PostCubit extends Cubit<PostState> {
     );
   }
 
-  /// Interacts with [PostsRepository] to add a post to favorites.
+  /// Interacts with [_] to add a post to favorites.
   void addPostToFavorites({required Post post}) {
     emit(
       PostState.pending(
@@ -82,13 +84,18 @@ class PostCubit extends Cubit<PostState> {
         favoritePosts: state.favoritePosts,
       ),
     );
-    _postsRepository.addPostToFavorites(post: post);
-    emit(
-      PostState.success(
-        posts: [...state.posts]..remove(post),
-        favoritePosts: [...state.favoritePosts, post],
-      ),
-    );
+    if (state.favoritePosts.contains(post)) {
+      removePostFromFavorites(post: post);
+    } else {
+      _postsRepository.addPostToFavorites(post: post);
+      emit(
+        PostState.success(
+          posts: [...state.posts]..remove(post),
+          favoritePosts: [...state.favoritePosts, post],
+          message: 'Added to favorites!',
+        ),
+      );
+    }
   }
 
   /// Interacts with [PostsRepository] to remove a post to favorites.
@@ -99,12 +106,14 @@ class PostCubit extends Cubit<PostState> {
         favoritePosts: state.favoritePosts,
       ),
     );
+
     _postsRepository.removeFromFavorites(post: post).when(
       success: (_) {
         emit(
           PostState.success(
             posts: [post, ...state.posts],
             favoritePosts: [...state.favoritePosts]..remove(post),
+            message: 'Removed from favorites!',
           ),
         );
       },
@@ -134,6 +143,7 @@ class PostCubit extends Cubit<PostState> {
       PostState.success(
         posts: const [],
         favoritePosts: state.favoritePosts,
+        message: 'Successfully deleted all posts!',
       ),
     );
   }
@@ -154,14 +164,15 @@ class PostCubit extends Cubit<PostState> {
           PostState.success(
             posts: val,
             favoritePosts: state.favoritePosts,
+            message: 'Successfully re-fetched posts!',
           ),
         );
       },
       failure: (failure) {
         emit(
           PostState.failure(
-            message:
-                failure.message ?? 'Something went wrong while fetching posts',
+            message: failure.message ??
+                'Something went wrong while re-fetching posts',
             posts: state.posts,
             favoritePosts: state.favoritePosts,
           ),

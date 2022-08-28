@@ -1,13 +1,14 @@
 part of 'post_cubit.dart';
 
-/// {@template price_tracker_state}
+/// {@template post_state}
 /// Describes the different states of the [PostCubit].
 /// Instances should be created using the factory methods to
 /// make the possible states explicit and typed.
 /// {@endtemplate}
 @immutable
 class PostState {
-  const PostState._({
+  /// {@macro post_state}
+  const PostState({
     required this.status,
     required this.posts,
     required this.favoritePosts,
@@ -22,7 +23,7 @@ class PostState {
     required List<Post> posts,
     required List<Post> favoritePosts,
   }) =>
-      PostState._(
+      PostState(
         status: PostStatus.pending,
         message: message,
         posts: posts,
@@ -38,7 +39,7 @@ class PostState {
     required List<Post> favoritePosts,
     List<Comment>? commentsByPost,
   }) {
-    return PostState._(
+    return PostState(
       status: PostStatus.success,
       message: message,
       posts: posts,
@@ -54,7 +55,7 @@ class PostState {
     required List<Post> posts,
     required List<Post> favoritePosts,
   }) =>
-      PostState._(
+      PostState(
         status: PostStatus.failure,
         message: message,
         posts: posts,
@@ -75,6 +76,53 @@ class PostState {
 
   /// Represents comments of a post
   final List<Comment>? commentsByPost;
+
+  /// Emulating pattern matching for making exclusive states clear.
+  /// Return a null value as the fallback.
+  T when<T>({
+    required T Function(
+      List<Post> posts,
+      List<Post> favorites,
+    )
+        pending,
+    required T Function(List<Post> posts, List<Post> favorites) success,
+    required T Function(
+      String message,
+      List<Post> posts,
+      List<Post> favorites,
+    )
+        failure,
+  }) {
+    switch (status) {
+      case PostStatus.pending:
+        return pending(posts, favoritePosts);
+      case PostStatus.success:
+        return success(posts, favoritePosts);
+      case PostStatus.failure:
+        return failure(
+          message ?? 'An unknown error occurred.',
+          posts,
+          favoritePosts,
+        );
+    }
+  }
+
+  T maybeWhen<T>({
+    T Function(List<Post> posts, List<Post> favorites)? pending,
+    T Function(List<Post> posts, List<Post> favorites)? success,
+    T Function(String)? failure,
+    required T Function() orElse,
+  }) {
+    switch (status) {
+      case PostStatus.pending:
+        return pending?.call(posts, favoritePosts) ?? orElse();
+      case PostStatus.success:
+        return success?.call(posts, favoritePosts) ?? orElse();
+      case PostStatus.failure:
+        return failure?.call(message ?? 'An unknown error occurred.') ??
+            orElse();
+    }
+  }
 
   /// The equality operator.
   @override
