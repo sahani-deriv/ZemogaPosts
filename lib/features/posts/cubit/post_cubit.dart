@@ -34,7 +34,7 @@ class PostCubit extends Cubit<PostState> {
     final result = await _postsRepository.getAllPosts();
     result.when(
       success: (val) {
-        emit(PostState.success(posts: val, favoritePosts: const []));
+        emit(PostState.success(posts: val, favoritePosts: state.favoritePosts));
       },
       failure: (failure) {
         emit(
@@ -103,7 +103,7 @@ class PostCubit extends Cubit<PostState> {
       success: (_) {
         emit(
           PostState.success(
-            posts: [...state.posts, post],
+            posts: [post, ...state.posts],
             favoritePosts: [...state.favoritePosts]..remove(post),
           ),
         );

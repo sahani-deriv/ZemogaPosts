@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:posts_api_client/posts_api_client.dart';
 import 'package:zemoga_posts/app/theme/colors.dart';
+import 'package:zemoga_posts/features/posts/cubit/post_cubit.dart';
 import 'package:zemoga_posts/features/posts/view/pages/post_details_page.dart';
 import 'package:zemoga_posts/features/posts/view/widgets/post_card.dart';
 
@@ -22,33 +24,59 @@ class PostsTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.w),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ListView.builder(
-            shrinkWrap: true,
-            itemCount: favoritePosts.length,
-            itemBuilder: (context, index) {
-              return PostCard(
-                onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute<Widget>(
-                    builder: (context) => const PostDetailsPage(),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListView.separated(
+              separatorBuilder: (context, index) => Divider(
+                height: 1.h,
+                color: CustomColor.black25,
+              ),
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: favoritePosts.length,
+              itemBuilder: (context, index) {
+                return PostCard(
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute<Widget>(
+                      builder: (_) => PostDetailsPage(
+                        isFavorite: true,
+                        onTapStar: () =>
+                            context.read<PostCubit>().removePostFromFavorites(
+                                  post: favoritePosts[index],
+                                ),
+                        onTapDelete: () => context.read<PostCubit>().deletePost(
+                              post: favoritePosts[index],
+                            ),
+                        post: favoritePosts[index],
+                      ),
+                    ),
                   ),
-                ),
-                isFavorite: true,
-                title: favoritePosts[index].title,
-              );
-            },
-          ),
-          Expanded(
-            child: ListView.separated(
+                  isFavorite: true,
+                  title: favoritePosts[index].title,
+                );
+              },
+            ),
+            ListView.separated(
+              physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: posts.length,
               itemBuilder: (context, index) {
                 return PostCard(
                   onTap: () => Navigator.of(context).push(
                     MaterialPageRoute<Widget>(
-                      builder: (context) => const PostDetailsPage(),
+                      builder: (_) => PostDetailsPage(
+                        isFavorite: false,
+                        onTapStar: () =>
+                            context.read<PostCubit>().addPostToFavorites(
+                                  post: posts[index],
+                                ),
+                        onTapDelete: () => context.read<PostCubit>().deletePost(
+                              post: posts[index],
+                            ),
+                        post: posts[index],
+                      ),
                     ),
                   ),
                   isFavorite: false,
@@ -60,8 +88,8 @@ class PostsTab extends StatelessWidget {
                 color: CustomColor.black25,
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

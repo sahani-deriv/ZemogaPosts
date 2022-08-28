@@ -49,6 +49,7 @@ class PostsListView extends StatelessWidget {
             );
           } else {
             return AppTabView(
+              onTapRefresh: () => () {},
               title: 'Zemoga Posts',
               tabs: const [
                 Tab(text: 'All'),

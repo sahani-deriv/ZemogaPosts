@@ -89,7 +89,7 @@ class PostsLocalApiClient {
           .box<Post>('favorites')
           .values
           .firstWhere((element) => element.id.toString() == postId);
-      await _hive.box<Post>('favorites').delete(postToBeDeleted);
+      await _hive.box<Post>('favorites').delete(postToBeDeleted.id);
     } catch (e) {
       throw NoElementException();
     }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zemoga_posts/app/theme/colors.dart';
 import 'package:zemoga_posts/app/theme/text_styles.dart';
 
@@ -12,6 +13,7 @@ class AppTabView extends StatelessWidget {
     required this.tabs,
     required this.pages,
     this.onTab,
+    required this.onTapRefresh,
   });
 
   /// The title of the tab view.
@@ -26,6 +28,9 @@ class AppTabView extends StatelessWidget {
   /// The callback when a tab is selected.
   final void Function(int)? onTab;
 
+  ///The callback called when a refresh icon is tapped.
+  final VoidCallback onTapRefresh;
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -34,6 +39,16 @@ class AppTabView extends StatelessWidget {
         resizeToAvoidBottomInset: true,
         backgroundColor: CustomColor.white,
         appBar: AppBar(
+          actions: [
+            IconButton(
+              icon: Icon(
+                Icons.refresh,
+                size: 24.h,
+              ),
+              color: CustomColor.blue90,
+              onPressed: () {},
+            ),
+          ],
           backgroundColor: CustomColor.white,
           elevation: 1,
           centerTitle: false,
@@ -67,6 +82,14 @@ class AppTabView extends StatelessWidget {
         ),
         body: TabBarView(
           children: pages,
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: onTapRefresh,
+          backgroundColor: CustomColor.black25,
+          child: Icon(
+            Icons.delete,
+            size: 24.h,
+          ),
         ),
       ),
     );
