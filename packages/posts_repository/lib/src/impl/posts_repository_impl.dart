@@ -101,7 +101,10 @@ class PostRepositoryImpl implements PostsRepository {
       _localApiClient.deleteAllPosts();
       final posts = await _remoteApiClient.getAllPosts();
       for (final post in posts) {
-        _localApiClient.addPost(post);
+        ///To avoid duplicate posts on refetching
+        if (!_localApiClient.getAllFavoritePosts().contains(post)) {
+          _localApiClient.addPost(post);
+        }
       }
       return Result.success(_localApiClient.getAllPosts());
     } catch (e) {

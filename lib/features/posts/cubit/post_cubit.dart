@@ -138,6 +138,38 @@ class PostCubit extends Cubit<PostState> {
     );
   }
 
+  /// Interacts with [PostsRepository] to remove a post from cache
+  ///  and refetch posts.
+  Future<void> refetchPosts() async {
+    emit(
+      PostState.pending(
+        posts: state.posts,
+        favoritePosts: state.favoritePosts,
+      ),
+    );
+    final result = await _postsRepository.refetchPosts();
+    result.when(
+      success: (val) {
+        emit(
+          PostState.success(
+            posts: val,
+            favoritePosts: state.favoritePosts,
+          ),
+        );
+      },
+      failure: (failure) {
+        emit(
+          PostState.failure(
+            message:
+                failure.message ?? 'Something went wrong while fetching posts',
+            posts: state.posts,
+            favoritePosts: state.favoritePosts,
+          ),
+        );
+      },
+    );
+  }
+
   /// Interacts with [PostsRepository] to delete a post from cache.
   void deletePost({required Post post}) {
     emit(

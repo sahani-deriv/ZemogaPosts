@@ -41,8 +41,9 @@ class PostsLocalApiClient {
   }
 
   /// Adds post to the hive box
-  void addPost(Post post) =>
-      _addToBox(item: post, boxName: 'posts', key: post.id);
+  void addPost(Post post) {
+    _addToBox(item: post, boxName: 'posts', key: post.id);
+  }
 
   /// Adds comment with its key [postId] to the hive box
   void addComment({required List<Comment> comments, required int postId}) =>
