@@ -8,6 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:posts_repository/posts_repository.dart';
 import 'package:zemoga_posts/features/posts/view/posts_list_page.dart';
 import 'package:zemoga_posts/l10n/l10n.dart';
@@ -41,20 +42,24 @@ class AppView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        appBarTheme: const AppBarTheme(color: Color(0xFF13B9FF)),
-        colorScheme: ColorScheme.fromSwatch(
-          accentColor: const Color(0xFF13B9FF),
-        ),
-      ),
-      debugShowCheckedModeBanner: false,
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-      ],
-      supportedLocales: AppLocalizations.supportedLocales,
-      home: const PostsListPage(),
+    return ScreenUtilInit(
+      builder: (context, _) {
+        return MaterialApp(
+          theme: ThemeData(
+            appBarTheme: const AppBarTheme(color: Color(0xFF13B9FF)),
+            colorScheme: ColorScheme.fromSwatch(
+              accentColor: const Color(0xFF13B9FF),
+            ),
+          ),
+          debugShowCheckedModeBanner: false,
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: const PostsListPage(),
+        );
+      },
     );
   }
 }

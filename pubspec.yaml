@@ -20,6 +20,7 @@ dependencies:
     path: packages/posts_api_client
   posts_repository:
     path: packages/posts_repository
+  flutter_screenutil: ^5.5.3+2
 
 dev_dependencies:
   bloc_test: ^9.1.0
@@ -31,3 +32,17 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   generate: true
+
+fonts:
+  - family: PoppinsRegular
+    fonts:
+      - asset: assets/fonts/Poppins/Poppins-Regular.ttf
+  - family: PoppinsLight
+    fonts:
+      - asset: assets/fonts/Poppins/Poppins-Light.ttf
+  - family: PoppinsMedium
+    fonts:
+      - asset: assets/fonts/Poppins/Poppins-Medium.ttf
+  - family: PoppinsBold
+    fonts:
+      - asset: assets/fonts/Poppins/Poppins-Bold.ttf
