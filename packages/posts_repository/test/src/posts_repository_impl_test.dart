@@ -152,6 +152,38 @@ void main() {
         );
       });
     });
+    group('.refetchPosts', () {
+      setUp(() {
+        when(() => _remoteApiClient.getAllPosts()).thenAnswer(
+          (_) async => posts,
+        );
+        when(_localApiClient.getAllPosts).thenAnswer(
+          (_) => posts,
+        );
+        when(() => _localApiClient.deleteAllPosts())
+            .thenAnswer((invocation) {});
+      });
+      test('re-fetches the posts', () async {
+        expect(
+          await _repository.refetchPosts(),
+          Result<PostsFailure, List<Post>>.success(posts),
+        );
+      });
+      test('returns result with failure message', () async {
+        when(() => _localApiClient.deleteAllPosts())
+            .thenAnswer((invocation) {});
+        when(() => _remoteApiClient.getAllPosts()).thenThrow(
+          InvalidRequestException(),
+        );
+
+        expect(
+          await _repository.refetchPosts(),
+          Result<PostsFailure, List<Post>>.failure(
+            PostsFailure("Couldn't fetch posts."),
+          ),
+        );
+      });
+    });
     group('.removeFromFavorites', () {
       test('removes a post from favorite posts', () async {
         when(() => _localApiClient.removeFromFavorites(any<String>()))
@@ -200,38 +232,6 @@ void main() {
           await _repository.getCommentsById(postId: 1),
           Result<PostsFailure, List<Comment>>.failure(
             PostsFailure('Error fetching comments for the post.'),
-          ),
-        );
-      });
-    });
-
-    group('.refetchPosts', () {
-      test('re-fetches the posts', () async {
-        when(() => _localApiClient.deleteAllPosts())
-            .thenAnswer((invocation) {});
-        when(() => _remoteApiClient.getAllPosts()).thenAnswer(
-          (_) async => posts,
-        );
-        when(() => _localApiClient.getAllPosts()).thenAnswer(
-          (_) => posts,
-        );
-
-        expect(
-          await _repository.refetchPosts(),
-          Result<PostsFailure, List<Post>>.success(posts),
-        );
-      });
-      test('returns result with failure message', () async {
-        when(() => _localApiClient.deleteAllPosts())
-            .thenAnswer((invocation) {});
-        when(() => _remoteApiClient.getAllPosts()).thenThrow(
-          InvalidRequestException(),
-        );
-
-        expect(
-          await _repository.refetchPosts(),
-          Result<PostsFailure, List<Post>>.failure(
-            PostsFailure("Couldn't fetch posts."),
           ),
         );
       });

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:zemoga_posts/app/components/custom_snack_bar.dart';
 import 'package:zemoga_posts/app/theme/colors.dart';
 import 'package:zemoga_posts/features/posts/cubit/post_cubit.dart';
 import 'package:zemoga_posts/features/posts/view/widgets/functional_post_card.dart';
@@ -17,20 +16,7 @@ class FavoritesTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<PostCubit, PostState>(
-      listener: (context, state) {
-        if (state.message != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              duration: const Duration(seconds: 1),
-              backgroundColor: Colors.white,
-              content: CustomSnackBar(
-                message: state.message!,
-              ),
-            ),
-          );
-        }
-      },
+    return BlocBuilder<PostCubit, PostState>(
       builder: (context, state) {
         return Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
