@@ -15,6 +15,7 @@ class AppTabView extends StatelessWidget {
     required this.pages,
     this.onTab,
     required this.onTapRefresh,
+    required this.onTapDelete,
   });
 
   /// The title of the tab view.
@@ -31,6 +32,9 @@ class AppTabView extends StatelessWidget {
 
   ///The callback called when a refresh icon is tapped.
   final VoidCallback onTapRefresh;
+
+  ///The callback called when a delete icon is tapped.
+  final VoidCallback onTapDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +88,7 @@ class AppTabView extends StatelessWidget {
           children: pages,
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: onTapRefresh,
+          onPressed: onTapDelete,
           backgroundColor: CustomColor.black25,
           child: Icon(
             Icons.delete,

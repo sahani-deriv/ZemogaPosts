@@ -27,9 +27,13 @@ class PostRepositoryImpl implements PostsRepository {
   }
 
   @override
-  VoidResult deletePost({required String postId}) {
+  VoidResult deletePost({required Post post}) {
     try {
-      _localApiClient.deletePost(postId);
+      if (_localApiClient.getAllFavoritePosts().contains(post)) {
+        _localApiClient.removeFromFavorites(post.id.toString());
+      } else {
+        _localApiClient.deletePost(post.id.toString());
+      }
       return const Result.success(null);
     } on NoElementException {
       return Result.failure(

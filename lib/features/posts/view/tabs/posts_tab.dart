@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:posts_api_client/posts_api_client.dart';
+import 'package:zemoga_posts/app/components/custom_dialog.dart';
 import 'package:zemoga_posts/app/theme/colors.dart';
 import 'package:zemoga_posts/features/posts/cubit/post_cubit.dart';
 import 'package:zemoga_posts/features/posts/view/pages/post_details_page.dart';
@@ -35,22 +37,10 @@ class PostsTab extends StatelessWidget {
                   itemCount: state.favoritePosts.length,
                   itemBuilder: (context, index) {
                     return PostCard(
-                      onTap: () => Navigator.of(context).push(
-                        MaterialPageRoute<Widget>(
-                          builder: (_) => PostDetailsPage(
-                            isFavorite: true,
-                            onTapStar: () => context
-                                .read<PostCubit>()
-                                .removePostFromFavorites(
-                                  post: state.favoritePosts[index],
-                                ),
-                            onTapDelete: () =>
-                                context.read<PostCubit>().deletePost(
-                                      post: state.favoritePosts[index],
-                                    ),
-                            post: state.favoritePosts[index],
-                          ),
-                        ),
+                      onTap: () => _onTapPostCard(
+                        post: state.favoritePosts[index],
+                        context: context,
+                        isFavorite: true,
                       ),
                       isFavorite: true,
                       title: state.favoritePosts[index].title,
@@ -61,7 +51,7 @@ class PostsTab extends StatelessWidget {
                   Center(
                     child: Padding(
                       padding: EdgeInsets.symmetric(vertical: 30.h),
-                      child: const Text('No favorites yet'),
+                      child: const Text('No posts yet please refresh.'),
                     ),
                   )
                 else
@@ -71,21 +61,10 @@ class PostsTab extends StatelessWidget {
                     itemCount: state.posts.length,
                     itemBuilder: (context, index) {
                       return PostCard(
-                        onTap: () => Navigator.of(context).push(
-                          MaterialPageRoute<Widget>(
-                            builder: (_) => PostDetailsPage(
-                              isFavorite: false,
-                              onTapStar: () =>
-                                  context.read<PostCubit>().addPostToFavorites(
-                                        post: state.posts[index],
-                                      ),
-                              onTapDelete: () =>
-                                  context.read<PostCubit>().deletePost(
-                                        post: state.posts[index],
-                                      ),
-                              post: state.posts[index],
-                            ),
-                          ),
+                        onTap: () => _onTapPostCard(
+                          post: state.posts[index],
+                          context: context,
+                          isFavorite: false,
                         ),
                         isFavorite: false,
                         title: state.posts[index].title,
@@ -103,4 +82,38 @@ class PostsTab extends StatelessWidget {
       },
     );
   }
+}
+
+void _onTapPostCard({
+  required Post post,
+  required bool isFavorite,
+  required BuildContext context,
+}) {
+  Navigator.of(context).push(
+    MaterialPageRoute<Widget>(
+      builder: (_) => PostDetailsPage(
+        isFavorite: isFavorite,
+        onTapStar: () => context.read<PostCubit>().addPostToFavorites(
+              post: post,
+            ),
+        onTapDelete: () {
+          showDialog<Widget>(
+            context: context,
+            builder: (_) => CustomDialog(
+              title: 'Delete Alert',
+              description: '''
+This will be removed even from your favorites''',
+              onTapConfirm: () {
+                Navigator.of(context).pop();
+                context.read<PostCubit>().deletePost(
+                      post: post,
+                    );
+              },
+            ),
+          );
+        },
+        post: post,
+      ),
+    ),
+  );
 }

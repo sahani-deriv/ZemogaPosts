@@ -76,7 +76,7 @@ class PostCubit extends Cubit<PostState> {
     );
   }
 
-  /// Interacts with [_] to add a post to favorites.
+  /// Interacts with [PostsRepository] to add a post to favorites.
   void addPostToFavorites({required Post post}) {
     emit(
       PostState.pending(
@@ -120,8 +120,7 @@ class PostCubit extends Cubit<PostState> {
       failure: (failure) {
         emit(
           PostState.failure(
-            message: failure.message ??
-                'Something went wrong while removing from favorites',
+            message: failure.message ?? 'Something went wrong.',
             posts: state.posts,
             favoritePosts: state.favoritePosts,
           ),
@@ -189,14 +188,25 @@ class PostCubit extends Cubit<PostState> {
         favoritePosts: state.favoritePosts,
       ),
     );
-    _postsRepository.deletePost(postId: post.id.toString()).when(
+    _postsRepository.deletePost(post: post).when(
       success: (_) {
-        emit(
-          PostState.success(
-            posts: [...state.posts]..remove(post),
-            favoritePosts: state.favoritePosts,
-          ),
-        );
+        if (state.posts.contains(post)) {
+          emit(
+            PostState.success(
+              posts: [...state.posts]..remove(post),
+              favoritePosts: state.favoritePosts,
+              message: 'Successfully deleted post!',
+            ),
+          );
+        } else {
+          emit(
+            PostState.success(
+              posts: state.posts,
+              favoritePosts: [...state.favoritePosts]..remove(post),
+              message: 'Successfully deleted post!',
+            ),
+          );
+        }
       },
       failure: (failure) {
         emit(

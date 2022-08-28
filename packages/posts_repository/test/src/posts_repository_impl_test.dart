@@ -119,21 +119,33 @@ void main() {
     });
     group('.deletePost', () {
       test('deletes a post from posts cache', () async {
+        when(
+          () => _localApiClient.getAllFavoritePosts(),
+        ).thenAnswer(
+          (_) => [],
+        );
+
         when(() => _localApiClient.deletePost(any<String>())).thenAnswer(
           (_) async => () {},
         );
         expect(
-          _repository.deletePost(postId: '1'),
+          _repository.deletePost(post: posts.first),
           Result<PostsFailure, void>.success(null),
         );
       });
 
       test('returns result with failure value during exception', () {
+        when(
+          () => _localApiClient.getAllFavoritePosts(),
+        ).thenAnswer(
+          (_) => [],
+        );
+
         when(() => _localApiClient.deletePost(any<String>())).thenThrow(
           NoElementException(),
         );
         expect(
-          _repository.deletePost(postId: '1'),
+          _repository.deletePost(post: posts.first),
           Result<PostsFailure, void>.failure(
             PostsFailure('No post found with the given id.'),
           ),

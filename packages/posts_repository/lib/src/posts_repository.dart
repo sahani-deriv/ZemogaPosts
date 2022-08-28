@@ -32,7 +32,7 @@ abstract class PostsRepository {
   void addPostToFavorites({required Post post});
 
   ///Deletes a post.
-  VoidResult deletePost({required String postId});
+  VoidResult deletePost({required Post post});
 
   ///Deletes all the posts from the local database.
   void deleteAllPosts();

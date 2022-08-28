@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:posts_repository/posts_repository.dart';
+import 'package:zemoga_posts/app/components/custom_dialog.dart';
 import 'package:zemoga_posts/app/components/custom_snack_bar.dart';
 import 'package:zemoga_posts/features/posts/cubit/post_cubit.dart';
 import 'package:zemoga_posts/features/posts/view/tabs/tabs.dart';
@@ -60,6 +61,19 @@ class PostsListView extends StatelessWidget {
         },
         child: AppTabView(
           onTapRefresh: () => context.read<PostCubit>().refetchPosts(),
+          onTapDelete: () {
+            showDialog<Widget>(
+              context: context,
+              builder: (_) => CustomDialog(
+                title: 'Delete Alert',
+                description: '''
+You are about to delete all the posts including your favorites.''',
+                onTapConfirm: () {
+                  context.read<PostCubit>().deleteAllPosts();
+                },
+              ),
+            );
+          },
           title: 'Zemoga',
           tabs: const [
             Tab(text: 'All'),
