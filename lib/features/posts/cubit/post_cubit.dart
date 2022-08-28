@@ -82,6 +82,7 @@ class PostCubit extends Cubit<PostState> {
       PostState.pending(
         posts: state.posts,
         favoritePosts: state.favoritePosts,
+        comments: state.commentsByPost,
       ),
     );
     if (state.favoritePosts.contains(post)) {
@@ -93,6 +94,7 @@ class PostCubit extends Cubit<PostState> {
           posts: [...state.posts]..remove(post),
           favoritePosts: [...state.favoritePosts, post],
           message: 'Added to favorites!',
+          commentsByPost: state.commentsByPost,
         ),
       );
     }
@@ -104,6 +106,7 @@ class PostCubit extends Cubit<PostState> {
       PostState.pending(
         posts: state.posts,
         favoritePosts: state.favoritePosts,
+        comments: state.commentsByPost,
       ),
     );
 
@@ -114,6 +117,7 @@ class PostCubit extends Cubit<PostState> {
             posts: [post, ...state.posts],
             favoritePosts: [...state.favoritePosts]..remove(post),
             message: 'Removed from favorites!',
+            commentsByPost: state.commentsByPost,
           ),
         );
       },

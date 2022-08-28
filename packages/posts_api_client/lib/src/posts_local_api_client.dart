@@ -16,7 +16,7 @@ class PostsLocalApiClient {
       ..registerAdapter(PostAdapter())
       ..registerAdapter(CommentAdapter());
     await _hive.openBox<Post>('posts');
-    await _hive.openBox<List<Comment>>('comments');
+    await _hive.openBox<List<dynamic>>('comments');
     await _hive.openBox<Post>('favorites');
 
     return Future.value(PostsLocalApiClient._());
@@ -47,7 +47,8 @@ class PostsLocalApiClient {
 
   /// Adds comment with its key [postId] to the hive box
   void addComment({required List<Comment> comments, required int postId}) =>
-      _addToBox(item: comments, boxName: 'comments', key: postId);
+      _addToBox<List<dynamic>>(
+          item: comments, boxName: 'comments', key: postId);
 
   /// Adds favorite posts to the hive box
   void addPostToFavorites(Post post) =>
@@ -57,8 +58,10 @@ class PostsLocalApiClient {
   List<Post> getAllPosts() => _hive.box<Post>('posts').values.toList();
 
   /// Returns all the comments from the hive box
-  List<Comment> getCommentsByPostId(int postId) =>
-      _hive.box<List<Comment>>('comments').get(postId) ?? [];
+  List<Comment> getCommentsByPostId(int postId) {
+    return _hive.box<List<dynamic>>('comments').get(postId)?.cast<Comment>() ??
+        [];
+  }
 
   /// Returns all the favorite posts from the hive box
   List<Post> getAllFavoritePosts() =>

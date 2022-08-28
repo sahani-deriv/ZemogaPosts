@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:posts_api_client/posts_api_client.dart';
-import 'package:zemoga_posts/app/components/custom_dialog.dart';
 import 'package:zemoga_posts/app/theme/colors.dart';
 import 'package:zemoga_posts/features/posts/cubit/post_cubit.dart';
-import 'package:zemoga_posts/features/posts/view/pages/post_details_page.dart';
-import 'package:zemoga_posts/features/posts/view/widgets/post_card.dart';
+import 'package:zemoga_posts/features/posts/view/widgets/functional_post_card.dart';
 
 ///{@template posts_tab}
 ///Tab view that displays list of posts
@@ -36,14 +33,9 @@ class PostsTab extends StatelessWidget {
                   shrinkWrap: true,
                   itemCount: state.favoritePosts.length,
                   itemBuilder: (context, index) {
-                    return PostCard(
-                      onTap: () => _onTapPostCard(
-                        post: state.favoritePosts[index],
-                        context: context,
-                        isFavorite: true,
-                      ),
+                    return FunctionalPostCard(
                       isFavorite: true,
-                      title: state.favoritePosts[index].title,
+                      post: state.favoritePosts[index],
                     );
                   },
                 ),
@@ -60,14 +52,9 @@ class PostsTab extends StatelessWidget {
                     shrinkWrap: true,
                     itemCount: state.posts.length,
                     itemBuilder: (context, index) {
-                      return PostCard(
-                        onTap: () => _onTapPostCard(
-                          post: state.posts[index],
-                          context: context,
-                          isFavorite: false,
-                        ),
+                      return FunctionalPostCard(
+                        post: state.posts[index],
                         isFavorite: false,
-                        title: state.posts[index].title,
                       );
                     },
                     separatorBuilder: (context, index) => Divider(
@@ -82,38 +69,4 @@ class PostsTab extends StatelessWidget {
       },
     );
   }
-}
-
-void _onTapPostCard({
-  required Post post,
-  required bool isFavorite,
-  required BuildContext context,
-}) {
-  Navigator.of(context).push(
-    MaterialPageRoute<Widget>(
-      builder: (_) => PostDetailsPage(
-        isFavorite: isFavorite,
-        onTapStar: () => context.read<PostCubit>().addPostToFavorites(
-              post: post,
-            ),
-        onTapDelete: () {
-          showDialog<Widget>(
-            context: context,
-            builder: (_) => CustomDialog(
-              title: 'Delete Alert',
-              description: '''
-This will be removed even from your favorites''',
-              onTapConfirm: () {
-                Navigator.of(context).pop();
-                context.read<PostCubit>().deletePost(
-                      post: post,
-                    );
-              },
-            ),
-          );
-        },
-        post: post,
-      ),
-    ),
-  );
 }

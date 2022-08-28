@@ -22,12 +22,14 @@ class PostState {
     String? message,
     required List<Post> posts,
     required List<Post> favoritePosts,
+    List<Comment>? comments,
   }) =>
       PostState(
         status: PostStatus.pending,
         message: message,
         posts: posts,
         favoritePosts: favoritePosts,
+        commentsByPost: comments,
       );
 
   /// Returns a [PostState] with the [status] set to
@@ -109,7 +111,8 @@ class PostState {
 
   T maybeWhen<T>({
     T Function(List<Post> posts, List<Post> favorites)? pending,
-    T Function(List<Post> posts, List<Post> favorites)? success,
+    T Function(List<Post> posts, List<Post> favorites, List<Comment>? comments)?
+        success,
     T Function(String)? failure,
     required T Function() orElse,
   }) {
@@ -117,7 +120,7 @@ class PostState {
       case PostStatus.pending:
         return pending?.call(posts, favoritePosts) ?? orElse();
       case PostStatus.success:
-        return success?.call(posts, favoritePosts) ?? orElse();
+        return success?.call(posts, favoritePosts, commentsByPost) ?? orElse();
       case PostStatus.failure:
         return failure?.call(message ?? 'An unknown error occurred.') ??
             orElse();

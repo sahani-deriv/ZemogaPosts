@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:posts_api_client/posts_api_client.dart';
 import 'package:zemoga_posts/app/theme/text_styles.dart';
+import 'package:zemoga_posts/features/posts/cubit/post_cubit.dart';
+import 'package:zemoga_posts/features/posts/view/widgets/comment_card.dart';
 import 'package:zemoga_posts/features/posts/view/widgets/details_page_header.dart';
 
 ///{@template post_details_page}
 ///Page that displays details of a post
 ///{@endtemplate}
-class PostDetailsPage extends StatelessWidget {
+class PostDetailsPage extends StatefulWidget {
   ///{@macro post_details_page}
   const PostDetailsPage({
     super.key,
@@ -30,31 +33,79 @@ class PostDetailsPage extends StatelessWidget {
   final bool isFavorite;
 
   @override
+  State<PostDetailsPage> createState() => _PostDetailsPageState();
+}
+
+class _PostDetailsPageState extends State<PostDetailsPage> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<PostCubit>().getCommentsByPost(postId: widget.post.id);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              DetailsPageHeader(
-                onTapStar: onTapStar,
-                onTapDelete: onTapDelete,
-                isFavorite: isFavorite,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 20.h),
-                child: Text(
-                  post.title,
-                  style: CustomTextStyles.mediumText16,
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                DetailsPageHeader(
+                  onTapStar: widget.onTapStar,
+                  onTapDelete: widget.onTapDelete,
+                  isFavorite: widget.isFavorite,
                 ),
-              ),
-              Text(
-                post.body,
-                style: CustomTextStyles.regularText14,
-              ),
-            ],
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 20.h),
+                  child: Text(
+                    widget.post.title,
+                    style: CustomTextStyles.mediumText16,
+                  ),
+                ),
+                Text(
+                  widget.post.body,
+                  style: CustomTextStyles.regularText14,
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10.h),
+                  child: const Divider(),
+                ),
+                Text('Comments', style: CustomTextStyles.mediumText20),
+                BlocBuilder<PostCubit, PostState>(
+                  builder: (context, state) {
+                    return state.maybeWhen(
+                      success: (posts, favorites, comments) =>
+                          comments == null || comments.isEmpty
+                              ? Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 10.h),
+                                  child: const Text('No comments'),
+                                )
+                              : ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: comments.length,
+                                  itemBuilder: (context, index) {
+                                    return Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 10.h),
+                                      child: CommentCard(
+                                        email: comments[index].email,
+                                        name: comments[index].name,
+                                        comment: comments[index].body,
+                                      ),
+                                    );
+                                  },
+                                ),
+                      orElse: Container.new,
+                    );
+                  },
+                )
+              ],
+            ),
           ),
         ),
       ),
