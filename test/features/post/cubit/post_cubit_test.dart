@@ -16,6 +16,7 @@ final posts = List.generate(
     body: 'Test description of the post',
   ),
 );
+
 void main() {
   group('PostCubit', () {
     late PostsRepository _postsRepository;

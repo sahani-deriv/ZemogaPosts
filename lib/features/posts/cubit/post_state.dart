@@ -8,12 +8,12 @@ part of 'post_cubit.dart';
 @immutable
 class PostState {
   /// {@macro post_state}
-  const PostState({
+  const PostState._({
     required this.status,
     required this.posts,
     required this.favoritePosts,
     this.message,
-    this.commentsByPost,
+    this.commentsByPost = const [],
   });
 
   /// Returns a [PostState] with the [status] set to
@@ -22,9 +22,9 @@ class PostState {
     String? message,
     required List<Post> posts,
     required List<Post> favoritePosts,
-    List<Comment>? comments,
+    List<Comment> comments = const [],
   }) =>
-      PostState(
+      PostState._(
         status: PostStatus.pending,
         message: message,
         posts: posts,
@@ -39,9 +39,9 @@ class PostState {
     String? message,
     required List<Post> posts,
     required List<Post> favoritePosts,
-    List<Comment>? commentsByPost,
+    List<Comment> commentsByPost = const [],
   }) {
-    return PostState(
+    return PostState._(
       status: PostStatus.success,
       message: message,
       posts: posts,
@@ -57,7 +57,7 @@ class PostState {
     required List<Post> posts,
     required List<Post> favoritePosts,
   }) =>
-      PostState(
+      PostState._(
         status: PostStatus.failure,
         message: message,
         posts: posts,
@@ -77,7 +77,7 @@ class PostState {
   final String? message;
 
   /// Represents comments of a post
-  final List<Comment>? commentsByPost;
+  final List<Comment> commentsByPost;
 
   /// Emulating pattern matching for making exclusive states clear.
   /// Return a null value as the fallback.
@@ -109,7 +109,7 @@ class PostState {
     }
   }
 
-  /// Makes callback not required and can use [orElse] method when null.
+  /// Similar to the when method with a fallback callback.
   T maybeWhen<T>({
     T Function(List<Post> posts, List<Post> favorites)? pending,
     T Function(List<Post> posts, List<Post> favorites, List<Comment>? comments)?

@@ -20,7 +20,7 @@ A simple posts app.
 - **[Flutter Bloc][flutter_bloc_link]** : State management & built in testing support.
 - **[Dio][dio_link]** : Handling network calls.
 - **[Easy Loading][easy_loading_link]** : Handling loading states.
-- **[Hive Flutter][hive_link]** : Handling caching of the posts. Hive greatly outperforms SQLite and SharedPreferences when it comes to writing or deleting.
+- **[Hive Flutter][hive_link]** : Handling caching of the posts. 
 - **[Freezed][freezed_link]** & **[Json Serializable][json_serializable_link]**: Data classes and Json serialization.
 - **[Mocktail][mocktail_link]** : For mocking dependencies.
 - **[Very Good Cli][very_good_cli_link]** : Quickly bootstrapping projects with standard practices.
@@ -30,6 +30,12 @@ A simple posts app.
 - Layered architecture with a good separation of concerns between the presentation layer, business logic, repositories & the network layer.
 - Tested code. (Widget, Unit Tests. Need to add some Integration Tests)
 - In par with the [Test Pyramid][test_pyramid_link]
+
+## Explanation of the Solution
+
+- Created two different packages - posts_repository and posts_api_client. Only posts_api_client can make the network calls with the help of Dio and can cache the posts using Hive. Posts repository interacts with the posts_api_client for functionalities. This way code is more independent and reusable.
+- Hive greatly outperforms SQLite and SharedPreferences when it comes to writing or deleting which is why Hive has been used to handle caching.
+- Cubit has been used for state management. It interacts with the posts_repository and updates the state by which widget renders according to it. Cubit is a simple state management that abandons the concept of events from BloC to make emitting states easier. In the case of app, BloC is not needed in my opinion.
 
 ## Improvements (if supported by the project timeline)
 
