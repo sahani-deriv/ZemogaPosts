@@ -37,6 +37,13 @@ A simple posts app.
 - Hive greatly outperforms SQLite and SharedPreferences when it comes to writing or deleting which is why Hive has been used to handle caching.
 - Cubit has been used for state management. It interacts with the posts_repository and updates the state by which widget renders according to it. Cubit is a simple state management that abandons the concept of events from BloC to make emitting states easier. In the case of app, BloC is not needed in my opinion.
 
+## Alternatives
+
+- Using separate cubit to handle favorites with bloc to bloc communication acting as means to handle posts and favorite. This can implemented later with more time.
+- Could have used same hive box to store favorites by adding isFavorite parameter to the Post model. 
+- In this project, there is a separate hive box to store the favorite posts which has kept everything well separated and easy for modification. Only con is that, there is an extra hive box for this.
+
+
 ## Improvements (if supported by the project timeline)
 
 - [ ] More fined grained exception handling.
