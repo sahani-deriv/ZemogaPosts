@@ -41,7 +41,7 @@ A simple posts app.
 
 - Using separate cubit to handle favorites with bloc to bloc communication acting as means to handle posts and favorite. This can implemented later with more time.
 - Could have used same hive box to store favorites by adding isFavorite parameter to the Post model. 
-- In this project, there is a separate hive box to store the favorite posts which has kept everything well separated and easy for modification. Only con is that, there is an extra hive box for this.
+- In this project, there is a separate hive box to store the favorite posts which has kept everything well separated and easy for modification. Only con is that, there is an extra hive box created for this.
 
 
 ## Improvements (if supported by the project timeline)
@@ -51,6 +51,7 @@ A simple posts app.
 - [ ] Fix redundant and incomplete documentations.
 - [ ] Refactor the tests to follow the robot testing pattern for better readability and maintenance.
 - [ ] Add integration and E2E tests.
+- [ ] Add proper internationalization using the l10n library.
 
 ## Getting Started 🚀
 
