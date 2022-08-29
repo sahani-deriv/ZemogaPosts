@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:zemoga_posts/app/theme/colors.dart';
 
-///{@template custom_dialog}
+///{@template app_dialog}
 /// A customized dialog for this app.
 /// {@endtemplate}
-class CustomDialog extends StatelessWidget {
-  ///{@macro custom_dialog}
-  const CustomDialog({
+class AppDialog extends StatelessWidget {
+  ///{@macro app_dialog}
+  const AppDialog({
     super.key,
     required this.title,
     required this.description,
@@ -29,8 +29,7 @@ class CustomDialog extends StatelessWidget {
       content: Text(description),
       actions: [
         TextButton(
-          child:
-              const Text('Cancel', style: TextStyle(color: CustomColor.blue90)),
+          child: const Text('Cancel', style: TextStyle(color: AppColor.blue90)),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -38,7 +37,7 @@ class CustomDialog extends StatelessWidget {
         TextButton(
           child: const Text(
             'Confirm',
-            style: TextStyle(color: CustomColor.blue90),
+            style: TextStyle(color: AppColor.blue90),
           ),
           onPressed: () {
             Navigator.of(context).pop();

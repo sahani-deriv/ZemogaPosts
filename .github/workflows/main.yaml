@@ -10,4 +10,5 @@ jobs:
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v1
     with:
       flutter_channel: stable
+      min_coverage: 50
       flutter_version: 3.0.5

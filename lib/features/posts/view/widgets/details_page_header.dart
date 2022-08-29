@@ -58,12 +58,12 @@ class DetailsPageHeader extends StatelessWidget {
                   ? Icon(
                       Icons.star,
                       size: 24.h,
-                      color: CustomColor.blue90,
+                      color: AppColor.blue90,
                     )
                   : Icon(
                       Icons.star_border,
                       size: 24.h,
-                      color: CustomColor.blue90,
+                      color: AppColor.blue90,
                     ),
             );
           },

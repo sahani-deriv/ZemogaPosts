@@ -36,13 +36,13 @@ class FavoritesTab extends StatelessWidget {
                   ListView.separated(
                     separatorBuilder: (context, index) => Divider(
                       height: 1.h,
-                      color: CustomColor.black25,
+                      color: AppColor.black25,
                     ),
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: state.favoritePosts.length,
                     itemBuilder: (context, index) {
-                      return FunctionalPostCard(
+                      return PostCardWidget(
                         post: state.favoritePosts[index],
                         isFavorite: true,
                       );

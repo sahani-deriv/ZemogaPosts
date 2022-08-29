@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 
 /// Defines the color palette for the App.
-abstract class CustomColor {
+abstract class AppColor {
   /// Black 25% opacity
   static const Color black25 = Color(0x40202124);
 

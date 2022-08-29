@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:zemoga_posts/app/theme/text_styles.dart';
+import 'package:zemoga_posts/app/theme/styles.dart';
 
 ///{@template comment_card}
 /// A customized comment card for this app.
@@ -30,15 +30,15 @@ class CommentCard extends StatelessWidget {
       children: [
         Text(
           email,
-          style: CustomTextStyles.boldText16,
+          style: AppTextStyle.boldText14,
         ),
         Text(
           name,
-          style: CustomTextStyles.boldText14,
+          style: AppTextStyle.boldText14,
         ),
         Text(
           comment,
-          style: CustomTextStyles.regularText14,
+          style: AppTextStyle.regularText14,
         )
       ],
     );

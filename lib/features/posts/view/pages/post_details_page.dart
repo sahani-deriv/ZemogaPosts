@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:posts_api_client/posts_api_client.dart';
-import 'package:zemoga_posts/app/theme/text_styles.dart';
+import 'package:zemoga_posts/app/theme/styles.dart';
 import 'package:zemoga_posts/features/posts/cubit/post_cubit.dart';
 import 'package:zemoga_posts/features/posts/view/widgets/comment_card.dart';
 import 'package:zemoga_posts/features/posts/view/widgets/details_page_header.dart';
@@ -63,43 +63,42 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
                   padding: EdgeInsets.symmetric(vertical: 20.h),
                   child: Text(
                     widget.post.title,
-                    style: CustomTextStyles.mediumText16,
+                    style: AppTextStyle.boldText20,
                   ),
                 ),
                 Text(
                   widget.post.body,
-                  style: CustomTextStyles.regularText14,
+                  style: AppTextStyle.regularText14,
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 10.h),
                   child: const Divider(),
                 ),
-                Text('Comments', style: CustomTextStyles.mediumText20),
+                Text('Comments', style: AppTextStyle.boldText20),
                 BlocBuilder<PostCubit, PostState>(
                   builder: (context, state) {
                     return state.maybeWhen(
-                      success: (posts, favorites, comments) =>
-                          comments == null || comments.isEmpty
-                              ? Padding(
+                      success: (_, __, comments) => (comments == null ||
+                              comments.isEmpty)
+                          ? Padding(
+                              padding: EdgeInsets.symmetric(vertical: 10.h),
+                              child: const Text('No comments'),
+                            )
+                          : ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: comments.length,
+                              itemBuilder: (context, index) {
+                                return Padding(
                                   padding: EdgeInsets.symmetric(vertical: 10.h),
-                                  child: const Text('No comments'),
-                                )
-                              : ListView.builder(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: comments.length,
-                                  itemBuilder: (context, index) {
-                                    return Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 10.h),
-                                      child: CommentCard(
-                                        email: comments[index].email,
-                                        name: comments[index].name,
-                                        comment: comments[index].body,
-                                      ),
-                                    );
-                                  },
-                                ),
+                                  child: CommentCard(
+                                    email: comments[index].email,
+                                    name: comments[index].name,
+                                    comment: comments[index].body,
+                                  ),
+                                );
+                              },
+                            ),
                       orElse: Container.new,
                     );
                   },

@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// Defines the text styles for the app.
-abstract class CustomTextStyles {
+abstract class AppTextStyle {
   ///Bold Text 20sp
   static TextStyle boldText20 = TextStyle(
     fontFamily: 'PoppinsRegular',

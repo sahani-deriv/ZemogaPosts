@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:zemoga_posts/app/theme/text_styles.dart';
+import 'package:zemoga_posts/app/theme/styles.dart';
 
-///{@template posts_card}
+///{@template app_posts_card}
 ///Card that displays a post
 ///{@endtemplate}
-class PostCard extends StatelessWidget {
-  ///{@macro posts_card}
-  const PostCard({
+class AppPostCard extends StatelessWidget {
+  ///{@macro app_posts_card}
+  const AppPostCard({
     super.key,
     required this.isFavorite,
     required this.title,
@@ -43,7 +43,7 @@ class PostCard extends StatelessWidget {
             Expanded(
               child: Text(
                 title,
-                style: CustomTextStyles.regularText14,
+                style: AppTextStyle.regularText14,
               ),
             ),
             Icon(

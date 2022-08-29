@@ -9,14 +9,14 @@ part of 'post_cubit.dart';
 class PostState {
   /// {@macro post_state}
   const PostState._({
-    required this.status,
+    required PostStatus status,
     required this.posts,
     required this.favoritePosts,
     this.message,
     this.commentsByPost = const [],
-  });
+  }) : _status = status;
 
-  /// Returns a [PostState] with the [status] set to
+  /// Returns a [PostState] with the [_status] set to
   /// [PostStatus.pending]. Denotes the pending state.
   factory PostState.pending({
     String? message,
@@ -32,7 +32,7 @@ class PostState {
         commentsByPost: comments,
       );
 
-  /// Returns a [PostState] with the [status] set to
+  /// Returns a [PostState] with the [_status] set to
   /// [PostStatus.success] and the posts.
   /// The [posts] should not be empty when the status is success.
   factory PostState.success({
@@ -50,7 +50,7 @@ class PostState {
     );
   }
 
-  /// Returns a [PostState] with the [status] set to
+  /// Returns a [PostState] with the [_status] set to
   /// [PostStatus.failure] and the error message.
   factory PostState.failure({
     required String message,
@@ -65,7 +65,7 @@ class PostState {
       );
 
   /// Represents the current status of a request/process.
-  final PostStatus status;
+  final PostStatus _status;
 
   /// Represents the list of posts.
   final List<Post> posts;
@@ -74,6 +74,7 @@ class PostState {
   final List<Post> favoritePosts;
 
   /// Represents the message to notify anything.
+  /// Should be null when no message needs to be displayed.
   final String? message;
 
   /// Represents comments of a post
@@ -95,7 +96,7 @@ class PostState {
     )
         failure,
   }) {
-    switch (status) {
+    switch (_status) {
       case PostStatus.pending:
         return pending(posts, favoritePosts);
       case PostStatus.success:
@@ -117,7 +118,7 @@ class PostState {
     T Function(String)? failure,
     required T Function() orElse,
   }) {
-    switch (status) {
+    switch (_status) {
       case PostStatus.pending:
         return pending?.call(posts, favoritePosts) ?? orElse();
       case PostStatus.success:
@@ -134,7 +135,7 @@ class PostState {
     if (identical(this, other)) return true;
     return other is PostState &&
         runtimeType == other.runtimeType &&
-        status == other.status &&
+        _status == other._status &&
         listEquals(posts, other.posts) &&
         listEquals(favoritePosts, other.favoritePosts) &&
         message == other.message;
@@ -143,7 +144,7 @@ class PostState {
   /// The hashCode method.
   @override
   int get hashCode =>
-      status.hashCode ^
+      _status.hashCode ^
       posts.hashCode ^
       favoritePosts.hashCode ^
       message.hashCode;
@@ -152,7 +153,7 @@ class PostState {
   @override
   String toString() {
     return '''
-PostState{status: $status, posts: $posts, 
+PostState{status: $_status, posts: $posts, 
     favoritePosts: $favoritePosts, message: $message}''';
   }
 }

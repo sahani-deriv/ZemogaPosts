@@ -198,7 +198,7 @@ Update the `CFBundleLocalizations` array in the `Info.plist` at `ios/Runner/Info
 
 ### App Screenshots
 
-<img src ="images/main.png" alt="Home" width = 300> 
+<img src ="images/home.png" alt="Home" width = 300> 
 <img src ="images/details.png" alt="Post Details" width = 300> 
 <img src ="images/alert.png" alt="Alert Dialog" width = 300> 
 

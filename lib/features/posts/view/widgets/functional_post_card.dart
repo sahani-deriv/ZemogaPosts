@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:posts_api_client/posts_api_client.dart';
-import 'package:zemoga_posts/app/components/custom_dialog.dart';
+import 'package:zemoga_posts/app/components/app_dialog.dart';
 import 'package:zemoga_posts/features/posts/cubit/post_cubit.dart';
 import 'package:zemoga_posts/features/posts/view/pages/post_details_page.dart';
 import 'package:zemoga_posts/features/posts/view/widgets/post_card.dart';
 
-///{@template functional_post_tab}
+///{@template post_card_widget}
 /// Post card with the on tap functionality
 /// {@endtemplate}
-class FunctionalPostCard extends StatelessWidget {
-  ///{@macro functional_post_tab}
-  const FunctionalPostCard({
+class PostCardWidget extends StatelessWidget {
+  ///{@macro post_card_widget}
+  const PostCardWidget({
     super.key,
     required this.post,
     required this.isFavorite,
@@ -24,7 +24,7 @@ class FunctionalPostCard extends StatelessWidget {
   final bool isFavorite;
   @override
   Widget build(BuildContext context) {
-    return PostCard(
+    return AppPostCard(
       onTap: () => onTapPostCard(
         post: post,
         context: context,
@@ -56,7 +56,7 @@ void onTapPostCard({
           onTapDelete: () {
             showDialog<Widget>(
               context: context,
-              builder: (_) => CustomDialog(
+              builder: (_) => AppDialog(
                 title: 'Delete Alert',
                 description:
                     '''This will be removed even from your favorites''',

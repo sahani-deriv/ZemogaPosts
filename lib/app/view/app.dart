@@ -11,7 +11,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:posts_repository/posts_repository.dart';
-import 'package:zemoga_posts/features/posts/view/pages/posts_list_page.dart';
+import 'package:zemoga_posts/features/posts/view/pages/home_page.dart';
 import 'package:zemoga_posts/l10n/l10n.dart';
 
 /// {@template app}
@@ -35,7 +35,7 @@ class App extends StatelessWidget {
 }
 
 /// {@template app_view}
-/// [MaterialApp] which sets the [PostsListPage] as the `home`.
+/// [MaterialApp] which sets the [HomePage] as the `home`.
 /// {@endtemplate}
 class AppView extends StatelessWidget {
   /// {@macro app_view}
@@ -59,7 +59,7 @@ class AppView extends StatelessWidget {
             GlobalMaterialLocalizations.delegate,
           ],
           supportedLocales: AppLocalizations.supportedLocales,
-          home: const PostsListPage(),
+          home: const HomePage(),
         );
       },
     );

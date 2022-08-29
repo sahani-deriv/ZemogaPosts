@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-///{@template custom_snack_bar}
+///{@template app_snack_bar}
 /// A customized snack bar for this app.
 /// {@endtemplate}
-class CustomSnackBar extends StatelessWidget {
-  ///{@macro custom_snack_bar}
-  const CustomSnackBar({super.key, required this.message});
+class AppSnackBar extends StatelessWidget {
+  ///{@macro app_snack_bar}
+  const AppSnackBar({super.key, required this.message});
 
   /// Message to be displayed in the snack bar.
   final String message;
