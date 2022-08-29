@@ -60,7 +60,8 @@ class HomeView extends StatelessWidget {
             context: context,
             builder: (_) => AppDialog(
               title: 'Delete Alert',
-              description: 'This will also delete your favorite posts.',
+              description:
+                  'This will also delete all the posts except for favorites.',
               onTapConfirm: () => context.read<PostCubit>().deleteAllPosts(),
             ),
           ),
