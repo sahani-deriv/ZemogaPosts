@@ -82,7 +82,7 @@ _\*Zemoga Posts works on iOS, Android, Web, and Windows._
 To run all unit and widget tests use the following command:
 
 ```sh
-$ flutter test --coverage --test-randomize-ordering-seed random
+$ sh test.sh
 ```
 
 To view the generated coverage report you can use [lcov](https://github.com/linux-test-project/lcov).
@@ -195,6 +195,12 @@ Update the `CFBundleLocalizations` array in the `Info.plist` at `ios/Runner/Info
     }
 }
 ```
+
+### App Screenshots
+
+<img src ="images/main.png" alt="Home/Markets" width = 300> <img src ="images/market_ticks.png" alt="Market Ticks" width = 300>
+<img src ="images/details.png" alt="Home/Markets" width = 300> <img src ="images/market_ticks.png" alt="Market Ticks" width = 300>
+<img src ="images/alert.png" alt="Home/Markets" width = 300> <img src ="images/market_ticks.png" alt="Market Ticks" width = 300>
 
 [coverage_badge]: coverage_badge.svg
 [flutter_localizations_link]: https://api.flutter.dev/flutter/flutter_localizations/flutter_localizations-library.html
