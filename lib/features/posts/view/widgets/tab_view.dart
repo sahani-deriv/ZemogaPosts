@@ -89,10 +89,11 @@ class AppTabView extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: onTapDelete,
-          backgroundColor: CustomColor.black25,
+          backgroundColor: CustomColor.black,
           child: Icon(
             Icons.delete,
             size: 24.h,
+            color: CustomColor.white,
           ),
         ),
       ),
