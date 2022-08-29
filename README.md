@@ -22,7 +22,7 @@ A simple posts app.
 - **[Easy Loading][easy_loading_link]** : Handling loading states.
 - **[Hive Flutter][hive_link]** : Handling caching of the posts. 
 - **[Freezed][freezed_link]** & **[Json Serializable][json_serializable_link]**: Data classes and Json serialization.
-- **[Mocktail][mocktail_link]** : For mocking dependencies.
+- **[Mocktail][mocktail_link]** : For mocking dependencies for testing purposes.
 - **[Very Good Cli][very_good_cli_link]** : Quickly bootstrapping projects with standard practices.
 
 ## Architecture & Processes
