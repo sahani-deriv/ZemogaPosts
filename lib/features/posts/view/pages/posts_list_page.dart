@@ -66,8 +66,7 @@ class PostsListView extends StatelessWidget {
               context: context,
               builder: (_) => CustomDialog(
                 title: 'Delete Alert',
-                description: '''
-You are about to delete all the posts including your favorites.''',
+                description: 'This will also delete your favorite posts.',
                 onTapConfirm: () {
                   context.read<PostCubit>().deleteAllPosts();
                 },

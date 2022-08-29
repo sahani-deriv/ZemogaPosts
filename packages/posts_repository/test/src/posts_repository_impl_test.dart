@@ -34,7 +34,7 @@ void main() {
     late MockLocalApiClient _localApiClient;
     late PostsRepository _repository;
 
-    setUpAll(() {
+    setUp(() {
       _remoteApiClient = MockRemoteApiClient();
       _localApiClient = MockLocalApiClient();
       _repository = PostRepositoryImpl(
@@ -153,17 +153,20 @@ void main() {
       });
     });
     group('.refetchPosts', () {
-      setUp(() {
-        when(() => _remoteApiClient.getAllPosts()).thenAnswer(
-          (_) async => posts,
-        );
+      test('re-fetches the posts', () async {
         when(_localApiClient.getAllPosts).thenAnswer(
           (_) => posts,
         );
+
+        when(() => _localApiClient.getAllFavoritePosts()).thenAnswer(
+          (_) => [],
+        );
+        when(() => _remoteApiClient.getAllPosts()).thenAnswer(
+          (_) async => posts,
+        );
+
         when(() => _localApiClient.deleteAllPosts())
             .thenAnswer((invocation) {});
-      });
-      test('re-fetches the posts', () async {
         expect(
           await _repository.refetchPosts(),
           Result<PostsFailure, List<Post>>.success(posts),
