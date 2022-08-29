@@ -49,44 +49,5 @@ void main() {
 
       expect(find.byType(AppTabView), findsOneWidget);
     });
-
-    // testWidgets('shows snackbar on receiving message from state',
-    //     (tester) async {
-    //   when(() => _postRepository.getAllPosts())
-    //       .thenAnswer((_) async => Result.success(posts));
-    //   when(() => _postCubit.getAllPosts()).thenAnswer(
-    //     (_) async => emits(
-    //       PostState.success(
-    //         posts: posts,
-    //         favoritePosts: posts,
-    //         message: 'Message',
-    //       ),
-    //     ),
-    //   );
-    //   when(() => _postCubit.getAllFavoritePosts()).thenAnswer(
-    //     (_) async => PostState.success(
-    //       posts: posts,
-    //       favoritePosts: posts,
-    //     ),
-    //   );
-
-    //   when(() => _postCubit.state).thenReturn(
-    //     PostState.success(
-    //       posts: posts,
-    //       favoritePosts: posts,
-    //       message: 'Message',
-    //     ),
-    //   );
-
-    //   await tester.pumpAppWithDependencies(
-    //     const PostsListView(),
-    //     cubit: _postCubit,
-    //     repository: _postRepository,
-    //   );
-
-    //   await tester.pump();
-
-    //   expect(find.byType(SnackBar), findsOneWidget);
-    // });
   });
 }
