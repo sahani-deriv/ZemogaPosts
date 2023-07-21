@@ -53,6 +53,7 @@ A simple posts app.
 - [ ] Add integration and E2E tests.
 - [ ] Add proper internationalization using the l10n library.
 
+
 ## Getting Started 🚀
 
 This project contains 3 flavors:
