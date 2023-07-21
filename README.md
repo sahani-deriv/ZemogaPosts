@@ -43,7 +43,6 @@ A simple posts app.
 - Could have used same hive box to store favorites by adding isFavorite parameter to the Post model. 
 - In this project, there is a separate hive box to store the favorite posts which has kept everything well separated and easy for modification. Only con is that, there is an extra hive box created for this.
 
-
 ## Improvements (if supported by the project timeline)
 
 - [ ] More fined grained exception handling.
