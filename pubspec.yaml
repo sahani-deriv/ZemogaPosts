@@ -17,7 +17,7 @@ dependencies:
     sdk: flutter
   flutter_screenutil: ^5.5.3+2
   hive_flutter: ^1.1.0
-  intl: ^0.17.0
+  intl: ^0.18.0
   posts_api_client:
     path: packages/posts_api_client
   posts_repository:
