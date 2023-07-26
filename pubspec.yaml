@@ -15,7 +15,7 @@ dependencies:
   flutter_easyloading: ^3.0.5
   flutter_localizations:
     sdk: flutter
-  flutter_screenutil: ^5.5.3+2
+  flutter_screenutil: ^5.8.4
   hive_flutter: ^1.1.0
   intl: ^0.18.0
   posts_api_client:
