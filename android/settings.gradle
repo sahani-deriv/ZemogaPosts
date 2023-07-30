@@ -1,3 +1,19 @@
+pluginManagement {
+    repositories {
+        mavenCentral()
+        google()
+        //Mobile Protect Maven Repository
+        maven {
+            credentials {
+                //Leave the username as "MAVEN"
+                username "MAVEN"
+                password "70452b20c0e8e8833fbb070b492eff31daadf2f175e1c9c0d9d0788fda682b08"
+            }
+            url "https://mobile-protect-repos.securetheorem.com/mobileprotect-android"
+        }
+    }
+}
+
 include ':app'
 
 def localPropertiesFile = new File(rootProject.projectDir, "local.properties")
