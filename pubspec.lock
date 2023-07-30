@@ -344,6 +344,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
+  mobile_protect:
+    dependency: "direct main"
+    description:
+      name: mobile_protect
+      sha256: be322b56ce93e341c9216b348c78ce5e7fad7397d8aeef25dbc18031dfcb0631
+      url: "https://pub.dev"
+    source: hosted
+    version: "23.0.0"
   mocktail:
     dependency: "direct dev"
     description:
