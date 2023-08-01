@@ -59,6 +59,9 @@ class PostCubit extends Cubit<PostState> {
         favoritePosts: state.favoritePosts,
       ),
     );
+    print(
+      'https://mobile-protect-repos.securetheorem.com/mobileprotect-android',
+    );
     _postsRepository.getAllFavoritePosts().when(
       success: (val) {
         emit(PostState.success(posts: state.posts, favoritePosts: val));
