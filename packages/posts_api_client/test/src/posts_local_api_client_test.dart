@@ -75,7 +75,7 @@ void main() {
           (_) async => () {},
         );
         _api.addPost(post);
-        verify(() => _postBox.put(any<int>(), post)).called(1);
+        verify(() => _postBox.put(any<int>(), post)).called(2);
       });
     });
 
