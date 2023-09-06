@@ -1,9 +1,7 @@
 coverage:
   status:
-    project:
-      default:
-        target: 80% # the required coverage value
-        threshold: 1%
+    patch: true
+    
 comment:
   layout: " diff, flags, files"
   behavior: default
