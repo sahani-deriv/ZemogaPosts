@@ -4,16 +4,28 @@ on: [pull_request, push]
 
 jobs:
   build:
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v1
-    with:
-      coverage_excludes: "*.g.dart"
-      flutter_channel: "stable"
-      flutter_version: "3.10.1"
-      working_directory: "."
-      test_recursion: true
-  check-test-metrics:
     runs-on: ubuntu-latest
+
     steps:
-      - run: flutter test --coverage
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2.10.0
+
+      - name: Install Dependencies
+        run: flutter packages get
+
+      - name: Format
+        run: dart format --set-exit-if-changed .
+
+      - name: Analyze
+        run: flutter analyze lib test example
+
+      - name: Run tests
+        run: flutter test --no-pub --coverage --test-randomize-ordering-seed random
+
+      - name: Check Code Coverage
+        uses: VeryGoodOpenSource/very_good_coverage@v2
+        with:
+          path: coverage/lcov.info
+
       - name: Run octocov
         uses: k1LoW/octocov-action@v0.51.6
