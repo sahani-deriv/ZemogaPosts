@@ -3,12 +3,16 @@ name: zemoga_posts
 on: [pull_request, push]
 
 jobs:
-  semantic-pull-request:
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/semantic_pull_request.yml@v1
-
   build:
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v1
     with:
-      flutter_channel: stable
-      min_coverage: 50
-      flutter_version: 3.0.5
+      coverage_excludes: "*.g.dart"
+      flutter_channel: "stable"
+      flutter_version: "3.10.1"
+      working_directory: "."
+      test_recursion: true
+  check-test-metrics:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run octocov
+        uses: k1LoW/octocov-action@v0.51.6
