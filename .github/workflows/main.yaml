@@ -14,5 +14,6 @@ jobs:
   check-test-metrics:
     runs-on: ubuntu-latest
     steps:
+      - run: flutter test --coverage
       - name: Run octocov
         uses: k1LoW/octocov-action@v0.51.6

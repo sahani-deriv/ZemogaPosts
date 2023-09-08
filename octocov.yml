@@ -1,6 +1,12 @@
 coverage:
   paths:
     - coverage/lcov.info
+codeToTestRatio:
+  code:
+    - "**/*.dart"
+    - "!**/*_test.dart"
+  test:
+    - "**/*_test.dart"
 testExecutionTime:
   if: true
 diff:
